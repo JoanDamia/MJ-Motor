@@ -1,4 +1,10 @@
 #include "Application.h"
+#include "Module.h"
+#include "ModuleCamera3D.h"
+#include "ModuleEditor.h"
+#include "ModuleInput.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
 
 Application::Application()
 {
