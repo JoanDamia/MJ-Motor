@@ -12,17 +12,22 @@ ModuleEditor::~ModuleEditor()
 {}
 
 bool ModuleEditor::Init() {
+	/*
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGameplad;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
 	ImGui::StyleColorsDark();
 
-	//ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
-	//ImGui_ImplOpenGL3_Init();
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
+	ImGui_ImplOpenGL3_Init();
+	*/
 
+	// =====================================================================
+	//El codigo no compila cuando hay obejetos declarados pero no definidos
+	// =====================================================================
 
 
 
