@@ -38,7 +38,7 @@
       <UniqueIdentifier>{1d07a7ae-7541-4ebe-8134-5a5b5b6088ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\ImGui">
-      <UniqueIdentifier>{d035f319-a0c4-4451-8c6f-5e00ddd7c7b5}</UniqueIdentifier>
+      <UniqueIdentifier>{59a8616d-b381-40cd-82a2-c4b96c17022b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

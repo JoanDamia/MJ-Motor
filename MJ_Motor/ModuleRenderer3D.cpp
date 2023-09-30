@@ -9,11 +9,16 @@
 #pragma comment (lib, "glu32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 
-#ifdef _DEBUG
-#pragma comment (lib, "MathGeoLib/libx86/Debug/MathGeoLib.lib") /* link Microsoft OpenGL lib   */
-#else
-#pragma comment (lib, "MathGeoLib/libx86/Release/MathGeoLib.lib") /* link Microsoft OpenGL lib   */
-#endif // _DEBUG
+
+//=====================================================
+//MathGeoLib da errores, se queda comentado de momento
+//=====================================================
+
+//#ifdef _DEBUG
+//#pragma comment (lib, "MathGeoLib/libx86/Debug/MathGeoLib.lib") /* link Microsoft OpenGL lib   */
+//#else
+//#pragma comment (lib, "MathGeoLib/libx86/Release/MathGeoLib.lib") /* link Microsoft OpenGL lib   */
+//#endif // _DEBUG
 
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
