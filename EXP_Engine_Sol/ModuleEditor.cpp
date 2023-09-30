@@ -12,7 +12,7 @@ ModuleEditor::~ModuleEditor()
 {}
 
 bool ModuleEditor::Init() {
-	/*
+	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -23,10 +23,10 @@ bool ModuleEditor::Init() {
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
-	*/
+	
 
 	// =====================================================================
-	//El codigo no compila cuando hay obejetos declarados pero no definidos
+	//El codigo no compila cuando hay objetos declarados pero no definidos.
 	// =====================================================================
 
 
