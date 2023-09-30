@@ -4,6 +4,9 @@
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl2.h"
+#include "ImGui/imgui_impl_opengl3.h"
 
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "glu32.lib") /* link Microsoft OpenGL lib   */
@@ -113,6 +116,10 @@ bool ModuleRenderer3D::Init()
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	Grid.axis = true;
+
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->editor->context);
+	ImGui_ImplOpenGL3_Init("#version 130");
+
 
 	return ret;
 }

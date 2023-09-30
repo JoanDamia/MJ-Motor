@@ -11,9 +11,12 @@ public:
 	ModuleEditor(Application* app, bool start_enabled = true);
 	~ModuleEditor();
 
+	SDL_GLContext context;
+
 	bool Start();
 	bool Init();
 	update_status Update(float dt);
+	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 };
