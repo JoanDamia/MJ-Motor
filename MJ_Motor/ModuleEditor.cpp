@@ -17,8 +17,8 @@ bool ModuleEditor::Init() {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ImGui::StyleColorsDark();
@@ -58,9 +58,38 @@ update_status ModuleEditor::PostUpdate(float dt)
         static float f = 0.0f;
         static int counter = 0;
 
-        ImGui::Begin("MJ Motor");                          // Create a window called "Hello, world!" and append into it.
+        ImGui::Begin("MJ Motor", NULL, ImGuiWindowFlags_MenuBar|ImGuiWindowFlags_AlwaysAutoResize);                        // Create a window called "Hello, world!" and append into it.
 
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("Gui Demo"))
+                    showDemo = !showDemo;
+
+                if (ImGui::MenuItem("Documentation"))
+                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
+
+                if (ImGui::MenuItem("Download latest"))
+                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/releases", NULL, NULL, SW_SHOWDEFAULT);
+
+                if (ImGui::MenuItem("Report a bug"))
+                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/issues", NULL, NULL, SW_SHOWDEFAULT);
+
+                if (ImGui::MenuItem("About"))
+                    ShellExecuteA(NULL, "open", "https://learnopengl.com/", NULL, NULL, SW_SHOWDEFAULT);
+
+                if (ImGui::MenuItem("Support"))
+                    ShellExecuteA(NULL, "open", "https://www.youtube.com/watch?v=2C4lFUpI_4U", NULL, NULL, SW_SHOWDEFAULT);
+
+                ImGui::EndMenu();
+            }
+        
+
+            ImGui::EndMenuBar();
+        }
+        
+        ImGui::Text("MJ - Ventana 1");               // Display some text (you can use a format strings too)
 
         ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
