@@ -117,6 +117,28 @@ bool ModuleRenderer3D::Init()
 
 	Grid.axis = true;
 
+   /*
+	VBO = 0;
+	EBO = 0;
+	VAO = 0;
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+	glGenVertexArrays(1, &VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(CubeVertices), CubeVertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(CubeIndices), CubeIndices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(VAO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glBindVertexArray(0);
+	*/
+
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->editor->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
@@ -147,6 +169,29 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	Grid.Render();
 	SDL_GL_SwapWindow(App->window->window);
+
+	/*
+	//creación de triangulos
+
+	 //Draw test here
+	 glLineWidth(2.0f);
+	 glBegin(GL_TRIANGLES);
+
+	 glVertex3d(0,0,0); glVertex3d(1,1,0); glVertex3d(1,0,0); //crear triangulos de esta forma para distinguirlos con mas facilidad
+	 glVertex3d(0,0,0); glVertex3d(0,1,0); glVertex3d(1,1,0);
+
+	 glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
+	 glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+
+	 glEnd();
+	 glLineWidth(1.0f);
+
+
+	 glBindVertexArray(VAO);
+	 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	*/
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
 	return UPDATE_CONTINUE;
 }
 
