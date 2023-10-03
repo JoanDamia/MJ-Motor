@@ -62,6 +62,7 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         if (ImGui::BeginMenuBar())
         {
+            // Help menu
             if (ImGui::BeginMenu("Help"))
             {
                 if (ImGui::MenuItem("Gui Demo"))
@@ -81,6 +82,22 @@ update_status ModuleEditor::PostUpdate(float dt)
 
                 if (ImGui::MenuItem("Support"))
                     ShellExecuteA(NULL, "open", "https://www.youtube.com/watch?v=2C4lFUpI_4U", NULL, NULL, SW_SHOWDEFAULT);
+
+                ImGui::EndMenu();
+            }
+
+            // Configuration menu
+            if (ImGui::BeginMenu("Configuration"))
+            {
+                if (ImGui::MenuItem("Options"))
+                    showDemo = !showDemo;
+
+                if (ImGui::MenuItem("Vsync"));
+
+                if (ImGui::MenuItem("Input"));
+
+                if (ImGui::MenuItem("Audio"));
+
 
                 ImGui::EndMenu();
             }
