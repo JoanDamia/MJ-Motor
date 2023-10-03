@@ -1,12 +1,15 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "SDL\include\SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl2.h"
 #include "ImGui/imgui_impl_opengl3.h"
+
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "glu32.lib") /* link Microsoft OpenGL lib   */
@@ -35,6 +38,18 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
+	//Glew Initialitation
+	GLenum err = glewInit();
+	// … check for errors
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	// Should be 2.0
+
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	
+	
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
