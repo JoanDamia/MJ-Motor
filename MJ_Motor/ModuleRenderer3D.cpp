@@ -15,6 +15,8 @@
 #pragma comment (lib, "glu32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 
+#include "ModuleEditor.h";
+
 
 //=====================================================
 //MathGeoLib da errores, se queda comentado de momento
@@ -183,6 +185,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	Grid.Render();
+
+	App->editor->DrawEditor();
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	/*
@@ -204,8 +209,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	 glBindVertexArray(VAO);
 	 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	*/
+	
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+	*/
 
 	return UPDATE_CONTINUE;
 }

@@ -26,6 +26,14 @@ bool ModuleEditor::Init() {
 	return false;
 }
 
+//------------------------------------------------------------------
+void ModuleEditor::DrawEditor() {
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+}
+
 // -----------------------------------------------------------------
 bool ModuleEditor::Start()
 {

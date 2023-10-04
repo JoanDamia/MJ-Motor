@@ -15,6 +15,7 @@ public:
 
 	bool Start();
 	bool Init();
+	void DrawEditor();
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
