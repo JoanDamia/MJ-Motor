@@ -40,16 +40,6 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	//Glew Initialitation
-	GLenum err = glewInit();
-	// … check for errors
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	// Should be 2.0
-
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 	
 	LOG("Creating 3D Renderer context");
@@ -62,7 +52,19 @@ bool ModuleRenderer3D::Init()
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-	
+
+	//Glew Initialitation
+	GLenum err = glewInit();
+	// … check for errors
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	// Should be 2.0
+
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+
 	if(ret == true)
 	{
 		//Use Vsync
@@ -134,7 +136,7 @@ bool ModuleRenderer3D::Init()
 
 	Grid.axis = true;
 
-   /*
+   
 	VBO = 0;
 	EBO = 0;
 	VAO = 0;
@@ -154,7 +156,7 @@ bool ModuleRenderer3D::Init()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glBindVertexArray(0);
-	*/
+	
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->editor->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
@@ -186,32 +188,30 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	Grid.Render();
 
+	//creación de triangulos
+
+
+	glLineWidth(2.0f);
+	glBegin(GL_TRIANGLES);
+
+	glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //crear triangulos de esta forma para distinguirlos con mas facilidad
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
+
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
+	glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+
+	glEnd();
+	glLineWidth(1.0f);
+
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
 	App->editor->DrawEditor();
 
 	SDL_GL_SwapWindow(App->window->window);
-
-	/*
-	//creación de triangulos
-
-	 //Draw test here
-	 glLineWidth(2.0f);
-	 glBegin(GL_TRIANGLES);
-
-	 glVertex3d(0,0,0); glVertex3d(1,1,0); glVertex3d(1,0,0); //crear triangulos de esta forma para distinguirlos con mas facilidad
-	 glVertex3d(0,0,0); glVertex3d(0,1,0); glVertex3d(1,1,0);
-
-	 glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
-	 glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
-
-	 glEnd();
-	 glLineWidth(1.0f);
-
-
-	 glBindVertexArray(VAO);
-	 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
-	*/
 
 	return UPDATE_CONTINUE;
 }
@@ -220,6 +220,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+		VBO = 0;
+	}
 
 	SDL_GL_DeleteContext(context);
 
