@@ -194,11 +194,27 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	glLineWidth(2.0f);
 	glBegin(GL_TRIANGLES);
 
+	//primera cara
 	glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //crear triangulos de esta forma para distinguirlos con mas facilidad
 	glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
-
+	//segunda cara
 	glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
 	glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+
+	/*
+	//tercera cara
+	glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); 
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
+	//quarta cara
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
+	glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+	//quinta cara
+	glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); 
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
+	//sexta cara
+	glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
+	glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+	*/
 
 	glEnd();
 	glLineWidth(1.0f);
