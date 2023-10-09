@@ -118,6 +118,8 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
+        ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
+
         ImGui::End();
 
         /*

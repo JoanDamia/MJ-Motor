@@ -21,4 +21,5 @@ public:
 	bool CleanUp();
 
 	bool showDemo;
+	bool showCubeDirectMode = false;
 };
