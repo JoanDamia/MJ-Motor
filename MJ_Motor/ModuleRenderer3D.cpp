@@ -136,27 +136,20 @@ bool ModuleRenderer3D::Init()
 
 	Grid.axis = true;
 
-   
-	VBO = 0;
-	EBO = 0;
-	VAO = 0;
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &vboId); //it's like the buffer ID
+	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(colors), 0, GL_STATIC_DRAW); //what the buffer will work with. Data.
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);                             // copy vertices starting from 0 offest, 0 as array start
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);                // copy normals after vertices, We start with the vertices size, when in the last buffer we started from 0
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), sizeof(colors), colors);  // copy colours after normals, same as beffore adding normals, as it's the space we occupied
+	glBindBuffer(GL_ARRAY_BUFFER, 0); //buffer closed
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(CubeVertices), CubeVertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &iboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(CubeIndices), CubeIndices, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glBindVertexArray(VAO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	glBindVertexArray(0);
-	
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->editor->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
@@ -179,6 +172,42 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
+
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleRenderer3D::Update(float dt) {
+
+	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
+    // When buffer object is bound with its ID, all pointers in gl*Pointer()
+    // are treated as offset instead of real pointer.
+	glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId); 
+
+	// enable vertex arrays
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	// before draw, specify vertex and index arrays with their offsets
+	glNormalPointer(GL_FLOAT, 0, (void*)sizeof(vertices));
+	glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(vertices) + sizeof(normals)));
+	glVertexPointer(3, GL_FLOAT, 0, 0); 
+
+	glDrawElements(GL_TRIANGLES,            // primitive type
+		36,                      // # of indices
+		GL_UNSIGNED_INT,         // data type
+		(void*)0);               // ptr to indices
+
+	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+
+	// it is good idea to release VBOs with ID 0 after use.
+	// Once bound with 0, all pointers in gl*Pointer() behave as real
+	// pointer, so, normal vertex array operations are re-activated
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	return UPDATE_CONTINUE;
 }
@@ -213,17 +242,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		//sexta cara
 		glVertex3d(1, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 1);
 		glVertex3d(1, 0, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 1);
-
 		glEnd();
 		glLineWidth(1.0f);
+		
 	}
 
-
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
-
 	App->editor->DrawEditor();
 
 	SDL_GL_SwapWindow(App->window->window);
@@ -236,10 +260,10 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	if (VBO != 0)
+	if (vboId != 0)
 	{
-		glDeleteBuffers(1, &VBO);
-		VBO = 0;
+		glDeleteBuffers(1, &vboId);
+		vboId = 0;
 	}
 
 	SDL_GL_DeleteContext(context);
