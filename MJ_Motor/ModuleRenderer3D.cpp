@@ -186,8 +186,14 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	// enable vertex arrays
 	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+
+	if (App->editor->showCubeBufferColors)
+	{
+		glEnableClientState(GL_COLOR_ARRAY);
+	}
+
 	glEnableClientState(GL_VERTEX_ARRAY);
+
 
 	// before draw, specify vertex and index arrays with their offsets
 	glNormalPointer(GL_FLOAT, 0, (void*)sizeof(vertices));

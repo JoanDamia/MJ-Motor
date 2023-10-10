@@ -22,4 +22,5 @@ public:
 
 	bool showDemo;
 	bool showCubeDirectMode = false;
+	bool showCubeBufferColors = false;
 };
