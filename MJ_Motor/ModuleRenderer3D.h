@@ -42,8 +42,15 @@ public:
 	uint EBO;
 	uint VAO;
 
+    //Cube Buffer Id
     uint vboId;
     uint iboId;
+
+    //Frame Buffer Id
+    uint frameBuffer;
+
+    //Render Buffer Object Elimination
+    uint rboDepthStencil;
 };
 
 // unit cube //////////////////////////////////////////////////////////////////

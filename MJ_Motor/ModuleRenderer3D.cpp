@@ -40,8 +40,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	
-	
+		
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
@@ -136,6 +135,53 @@ bool ModuleRenderer3D::Init()
 
 	Grid.axis = true;
 
+	//==============================================================================================================================================================
+
+	//Frame Buffer Creation
+	GLuint frameBuffer;
+	glGenFramebuffers(1, &frameBuffer);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+	//Frame Buffer Attachments
+
+	//Frame Buffer Texture Images
+	GLuint texColorBuffer;
+	glGenTextures(1, &texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+	);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0
+	);
+
+	//Render Buffer Object Images
+
+	//Render Buffer Object Creation
+	GLuint rboDepthStencil;
+	glGenRenderbuffers(1, &rboDepthStencil);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+
+	glFramebufferRenderbuffer(
+		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
+	);
+
+	//Using Frame Buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+	//==============================================================================================================================================================
+
+	//Cube Buffer Creation
 	glGenBuffers(1, &vboId); //it's like the buffer ID
 	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(colors), 0, GL_STATIC_DRAW); //what the buffer will work with. Data.
@@ -271,6 +317,12 @@ bool ModuleRenderer3D::CleanUp()
 		glDeleteBuffers(1, &vboId);
 		vboId = 0;
 	}
+
+	//Frame Buffer Elimination
+	glDeleteFramebuffers(1, &frameBuffer);
+
+	//Render Buffer Object Elimination
+	glDeleteFramebuffers(1, &rboDepthStencil);
 
 	SDL_GL_DeleteContext(context);
 
