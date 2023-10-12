@@ -40,6 +40,9 @@
     <Filter Include="Sources\ImGui">
       <UniqueIdentifier>{59a8616d-b381-40cd-82a2-c4b96c17022b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\FBX">
+      <UniqueIdentifier>{4856b342-fc22-49ad-a3e5-a78fdec5be14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Modules\Color.h">
@@ -288,6 +291,9 @@
     <ClInclude Include="Modules\Libraries\MathGeoLib\include\Time\Clock.h">
       <Filter>Externals\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\FBXLoader.h">
+      <Filter>Sources\FBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Color.cpp">
@@ -445,6 +451,9 @@
     </ClCompile>
     <ClCompile Include="Modules\Libraries\MathGeoLib\include\Time\Clock.cpp">
       <Filter>Externals\MathGeoLib\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\FBXLoader.cpp">
+      <Filter>Sources\FBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
