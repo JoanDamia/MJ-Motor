@@ -49,7 +49,10 @@ public:
     //Frame Buffer Id
     uint frameBuffer;
 
-    //Render Buffer Object Elimination
+    //Color Buffer Id
+    uint texColorBuffer;
+
+    //Render Buffer Id
     uint rboDepthStencil;
 };
 

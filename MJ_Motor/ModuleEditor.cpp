@@ -66,6 +66,19 @@ update_status ModuleEditor::PostUpdate(float dt)
         static float f = 0.0f;
         static int counter = 0;
 
+        //==============================================================================================================================================================
+
+        //ImGui Render Window
+        ImGui::Begin("MJ Render", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
+        ImGui::BeginChild("Render", ImVec2(SCREEN_WIDTH, SCREEN_HEIGHT));
+        ImVec2 wsize = ImGui::GetWindowSize();
+        ImGui::Image((ImTextureID)App->renderer3D->texColorBuffer, wsize, ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::EndChild();
+        ImGui::End();
+
+        //==============================================================================================================================================================
+       
+        //ImGui Basic Window
         ImGui::Begin("MJ Motor", NULL, ImGuiWindowFlags_MenuBar|ImGuiWindowFlags_AlwaysAutoResize);                        // Create a window called "Hello, world!" and append into it.
 
         if (ImGui::BeginMenuBar())

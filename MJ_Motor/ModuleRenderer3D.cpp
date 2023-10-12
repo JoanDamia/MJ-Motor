@@ -39,8 +39,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 
 // Called before render is available
 bool ModuleRenderer3D::Init()
-{
-		
+{		
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
@@ -63,6 +62,7 @@ bool ModuleRenderer3D::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	SDL_GL_MakeCurrent(App->window->window, context);
 
 	if(ret == true)
 	{
@@ -135,52 +135,49 @@ bool ModuleRenderer3D::Init()
 
 	Grid.axis = true;
 
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, context);
+	ImGui_ImplOpenGL3_Init("#version 130");
+
 	//==============================================================================================================================================================
 
+	//Frame Buffer
 	//Frame Buffer Creation
-	GLuint frameBuffer;
 	glGenFramebuffers(1, &frameBuffer);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
 	//Frame Buffer Attachments
-
-	//Frame Buffer Texture Images
-	GLuint texColorBuffer;
+	//Frame Buffer Texture
 	glGenTextures(1, &texColorBuffer);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
 	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
-	);
+		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	glFramebufferTexture2D(
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0
-	);
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
 
-	//Render Buffer Object Images
-
-	//Render Buffer Object Creation
-	GLuint rboDepthStencil;
+	//Render Buffer
+	//Render Buffer Creation
 	glGenRenderbuffers(1, &rboDepthStencil);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 1024);
+	glBindRenderbuffer(GL_FRAMEBUFFER, 0);
 
 	glFramebufferRenderbuffer(
-		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
-	);
+		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
 
 	//Using Frame Buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
 
 	//==============================================================================================================================================================
 
+	//Cube Buffer
 	//Cube Buffer Creation
 	glGenBuffers(1, &vboId); //it's like the buffer ID
 	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
@@ -194,12 +191,6 @@ bool ModuleRenderer3D::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-
-	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->editor->context);
-	ImGui_ImplOpenGL3_Init("#version 130");
-
 
 	return ret;
 }
@@ -219,10 +210,17 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	//Clear Frame Buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, texColorBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRenderer3D::Update(float dt) {
+	
+	Grid.Render();
 
 	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
     // When buffer object is bound with its ID, all pointers in gl*Pointer()
@@ -261,14 +259,14 @@ update_status ModuleRenderer3D::Update(float dt) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	Grid.Render();
-
 	if (App->editor->showCubeDirectMode)
 	{
 		//creación de triangulos
