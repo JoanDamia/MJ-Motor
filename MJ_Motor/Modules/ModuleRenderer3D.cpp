@@ -222,6 +222,49 @@ update_status ModuleRenderer3D::Update(float dt) {
 	
 	Grid.Render();
 
+	//==============================================================================================================================================================
+
+	FBXLoader::FileLoader(file_path, &myMesh);
+
+	//==============================================================================================================================================================
+
+	//Cube Direct Mode Render
+	if (App->editor->showCubeDirectMode)
+	{
+		//creación de triangulos
+
+		glLineWidth(2.0f);
+		glBegin(GL_TRIANGLES);
+
+		//primera cara
+		glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //crear triangulos de esta forma para distinguirlos con mas facilidad
+		glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
+		//segunda cara
+		glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
+		glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
+		//tercera cara
+		glVertex3d(0, 0, 0); glVertex3d(1, 0, 0); glVertex3d(1, 0, 1);
+		glVertex3d(0, 0, 1); glVertex3d(0, 0, 0); glVertex3d(1, 0, 1);
+		//quarta cara
+		glVertex3d(0, 1, 0); glVertex3d(1, 1, 1); glVertex3d(1, 1, 0);
+		glVertex3d(0, 1, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 0);
+		//quinta cara	
+		glVertex3d(1, 0, 0); glVertex3d(1, 1, 1); glVertex3d(1, 0, 1);
+		glVertex3d(1, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 1, 1);
+		//sexta cara
+		glVertex3d(1, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 1);
+		glVertex3d(1, 0, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 1);
+		glEnd();
+		glLineWidth(1.0f);
+
+	}
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
+	//==============================================================================================================================================================
+
+	//Cube Buffer Render
+	
 	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
     // When buffer object is bound with its ID, all pointers in gl*Pointer()
     // are treated as offset instead of real pointer.
@@ -267,37 +310,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	if (App->editor->showCubeDirectMode)
-	{
-		//creación de triangulos
-
-		glLineWidth(2.0f);
-		glBegin(GL_TRIANGLES);
-
-		//primera cara
-		glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //crear triangulos de esta forma para distinguirlos con mas facilidad
-		glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
-		//segunda cara
-		glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
-		glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);
-		//tercera cara
-		glVertex3d(0, 0, 0); glVertex3d(1, 0, 0); glVertex3d(1, 0, 1);
-		glVertex3d(0, 0, 1); glVertex3d(0, 0, 0); glVertex3d(1, 0, 1);
-		//quarta cara
-		glVertex3d(0, 1, 0); glVertex3d(1, 1, 1); glVertex3d(1, 1, 0);
-		glVertex3d(0, 1, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 0);
-		//quinta cara	
-		glVertex3d(1, 0, 0); glVertex3d(1, 1, 1); glVertex3d(1, 0, 1);
-		glVertex3d(1, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 1, 1);
-		//sexta cara
-		glVertex3d(1, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 1);
-		glVertex3d(1, 0, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 1);
-		glEnd();
-		glLineWidth(1.0f);
-		
-	}
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+	
 	App->editor->DrawEditor();
 
 	SDL_GL_SwapWindow(App->window->window);

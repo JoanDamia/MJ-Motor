@@ -7,7 +7,7 @@
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "Primitive.h"
 
-
+#include "FBXLoader.h"
 
 //todo: REMOVE this before 1st delivery!!
 #include "glmath.h"
@@ -54,6 +54,9 @@ public:
 
     //Render Buffer Id
     uint rboDepthStencil;
+
+    const char* file_path = "C:/Users/Usuario/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
+    MeshStorer myMesh;
 };
 
 // unit cube //////////////////////////////////////////////////////////////////

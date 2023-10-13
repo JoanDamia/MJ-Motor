@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 using namespace std;
 
 struct MeshStorer
@@ -11,6 +16,7 @@ struct MeshStorer
 
 	~MeshStorer() {}
 
+	//Parameters
 	uint id_index = 0; // index in VRAM
 	uint num_index = 0;
 	uint* index = nullptr;
@@ -18,13 +24,14 @@ struct MeshStorer
 	uint num_vertex = 0;
 	float* vertex = nullptr;
 
+	//Methods
+	void RenderOneMesh();
+
 };
 
 class FBXLoader
 {
 public:
-	//Parameters
-	const char file_path;
 
 	//Methods
 	void Debug();

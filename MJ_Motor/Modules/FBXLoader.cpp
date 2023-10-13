@@ -13,7 +13,6 @@ void FBXLoader::Debug()
 	aiAttachLogStream(&stream);
 }
 
-
 void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 {
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
@@ -21,13 +20,13 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 	{
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
-			// copy vertices
+			// Copy vertices
 			ourMesh->num_vertex = scene->mMeshes[i]->mNumVertices;
 			ourMesh->vertex = new float[ourMesh->num_vertex * 3];
 			memcpy(ourMesh->vertex, scene->mMeshes[i]->mVertices, sizeof(float) * ourMesh->num_vertex * 3);
 			LOG("New mesh with %d vertices", ourMesh->num_vertex);
 
-			// copy faces
+			// Copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
 				ourMesh->num_index = scene->mMeshes[i]->mNumFaces * 3;
@@ -49,9 +48,23 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		aiReleaseImport(scene);
+
+		ourMesh->RenderOneMesh();
 	}
 	else
 		LOG("Error loading scene % s", file_path);
+}
+
+void MeshStorer::RenderOneMesh()
+{
+	glBegin(GL_TRIANGLES);
+
+	for (int i = 0; i < num_index; i++)
+	{
+		glVertex3f(vertex[index[i] * 3], vertex[index[i] * 3 + 1], vertex[index[i] * 3 + 2]);
+	}
+
+	glEnd();
 }
 
 
