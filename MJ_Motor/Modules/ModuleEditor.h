@@ -5,6 +5,8 @@
 #include "ImGui/imgui_impl_sdl2.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+#include <vector>
+
 class ModuleEditor : public Module
 {
 public:
@@ -20,7 +22,15 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	//ImGui CheckBox booleans
 	bool showDemo;
 	bool showCubeDirectMode = false;
 	bool showCubeBufferColors = false;
+
+	//FPS Graph vectors
+	vector<float> fps_log;
+	vector<float> ms_log;
+
+	//FPS Graph functions
+	void PushLog(std::vector<float>* Log, float toPush);
 };

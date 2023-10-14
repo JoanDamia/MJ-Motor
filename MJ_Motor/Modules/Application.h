@@ -35,6 +35,9 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	float GetDt() const { return dt; }
+	float GetFrameRate()const { return 1.f / dt; }
+
 private:
 
 	void AddModule(Module* mod);

@@ -46,6 +46,11 @@ bool ModuleEditor::Start()
 // -----------------------------------------------------------------
 update_status ModuleEditor::Update(float dt)
 {
+    float FPS = floorf(App->GetFrameRate());
+    float MS = (App->GetDt() * 1000.f);
+
+    PushLog(&fps_log, FPS);
+    PushLog(&ms_log, MS);
 
 	return UPDATE_CONTINUE;
 }
@@ -135,16 +140,16 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         ImGui::Checkbox("CubeBufferColors", &showCubeBufferColors);
 
+        if (ImGui::CollapsingHeader("FPS"))
+        {
+            char title[25];
+            sprintf_s(title, 25, "Framerate %1.1f", fps_log[fps_log.size() - 1]);
+            ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+            sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
+            ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+        }
+
         ImGui::End();
-
-        /*
-        ImGui::Begin("Prueba extra ventana");
-
-        ImGui::Text("Ventana 2");
-
-        ImGui::End();
-        */
-
     }
 
     // 3. Show another simple window.
@@ -167,4 +172,18 @@ bool ModuleEditor::CleanUp()
 	ImGui::DestroyContext();
 
 	return true;
+}
+
+// -----------------------------------------------------------------
+void ModuleEditor::PushLog(std::vector<float>* Log, float toPush)
+{
+    if (Log->size() > 100)
+    {
+        Log->erase(Log->begin());
+        Log->push_back(toPush);
+    }
+    else
+    {
+        Log->push_back(toPush);
+    }
 }
