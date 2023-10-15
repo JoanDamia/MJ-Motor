@@ -18,9 +18,9 @@
 #include "ModuleEditor.h";
 
 
-//=====================================================
-//MathGeoLib da errores, se queda comentado de momento
-//=====================================================
+//===================================================
+//MathGeoLib make errors, it stays comented for now
+//===================================================
 
 //#ifdef _DEBUG
 //#pragma comment (lib, "MathGeoLib/libx86/Debug/MathGeoLib.lib") /* link Microsoft OpenGL lib   */
@@ -270,8 +270,8 @@ update_status ModuleRenderer3D::Update(float dt) {
 		glBegin(GL_TRIANGLES);
 
 		//primera cara
-		glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //crear triangulos de esta forma para distinguirlos con mas facilidad
-		glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0);
+		glVertex3d(0, 0, 0); glVertex3d(1, 1, 0); glVertex3d(1, 0, 0); //Make triangles this way to easy distinction
+		glVertex3d(0, 0, 0); glVertex3d(0, 1, 0); glVertex3d(1, 1, 0); 
 		//segunda cara
 		glVertex3d(0, 0, 0); glVertex3d(0, 1, 1); glVertex3d(0, 1, 0);
 		glVertex3d(0, 0, 1); glVertex3d(0, 1, 1); glVertex3d(0, 0, 0);

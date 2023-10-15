@@ -294,6 +294,9 @@
     <ClInclude Include="Modules\FBXLoader.h">
       <Filter>Sources\FBX</Filter>
     </ClInclude>
+    <ClInclude Include="TexLoader.h">
+      <Filter>Sources\FBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Color.cpp">
@@ -453,6 +456,9 @@
       <Filter>Externals\MathGeoLib\Time</Filter>
     </ClCompile>
     <ClCompile Include="Modules\FBXLoader.cpp">
+      <Filter>Sources\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="TexLoader.cpp">
       <Filter>Sources\FBX</Filter>
     </ClCompile>
   </ItemGroup>
