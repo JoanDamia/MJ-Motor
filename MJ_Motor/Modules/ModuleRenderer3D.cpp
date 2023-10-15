@@ -192,6 +192,21 @@ bool ModuleRenderer3D::Init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	//==============================================================================================================================================================
+
+	// Checkers Texture
+
+	loadTextureImageData();   // Load pattern into image data array
+
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, IMAGE_COLS, IMAGE_ROWS, 0, GL_RGB,
+		GL_UNSIGNED_BYTE, imageData);  // Create texture from image data
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
+
 	return ret;
 }
 
@@ -227,6 +242,24 @@ update_status ModuleRenderer3D::Update(float dt) {
 	FBXLoader::FileLoader(file_path, &myMesh);
 
 	//==============================================================================================================================================================
+
+	//Translate of the cubes position
+
+	//glPushMatrix();
+	glTranslatef(-3, 1, 0);
+	glPopMatrix();
+
+	if (App->editor->showCubeCheckers)
+	{
+		CheckersCube();
+	}
+
+	//glPushMatrix();
+	glTranslatef(-2.5, -1, -0.5);
+	glPopMatrix();
+
+	//==============================================================================================================================================================
+
 
 	//Cube Direct Mode Render
 	if (App->editor->showCubeDirectMode)
@@ -268,6 +301,12 @@ update_status ModuleRenderer3D::Update(float dt) {
 	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
     // When buffer object is bound with its ID, all pointers in gl*Pointer()
     // are treated as offset instead of real pointer.
+
+	//glPushMatrix();
+	glTranslatef(-1, 0.5, 0.5);
+	glPopMatrix();
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId); 
 
@@ -354,4 +393,56 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+// Load the imageData array with checkerboad pattern
+void ModuleRenderer3D::loadTextureImageData() {
+	int value;
+	for (int row = 0; row < IMAGE_ROWS; row++) {
+		for (int col = 0; col < IMAGE_COLS; col++) {
+			// Each cell is 8x8, value is 0 or 255 (black or white)
+			value = (((row & 0x8) == 0) ^ ((col & 0x8) == 0)) * 255;
+			imageData[row][col][0] = (GLubyte)value;
+			imageData[row][col][1] = (GLubyte)value;
+			imageData[row][col][2] = (GLubyte)value;
+		}
+	}
+}
+
+void ModuleRenderer3D::CheckersCube()
+{
+	glBegin(GL_QUADS);
+
+	// Front Face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+	// Back Face
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+	// Top Face
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+	// Bottom Face
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+	// Right face
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+	// Left Face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+	glEnd();
+
 }

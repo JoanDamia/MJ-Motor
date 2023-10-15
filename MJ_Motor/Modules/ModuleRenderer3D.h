@@ -12,6 +12,11 @@
 //todo: REMOVE this before 1st delivery!!
 #include "glmath.h"
 
+
+#define IMAGE_ROWS 64      // Texture image rows and columns
+#define IMAGE_COLS 64
+
+
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module
@@ -28,6 +33,8 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
+    void loadTextureImageData();
+    void CheckersCube();
 
 public:
 
@@ -57,6 +64,9 @@ public:
 
     const char* file_path = "C:/Users/Usuario/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
     MeshStorer myMesh;
+
+    //Chekers Texture
+    GLubyte imageData[IMAGE_ROWS][IMAGE_COLS][3]; // Texture image data
 };
 
 // unit cube //////////////////////////////////////////////////////////////////

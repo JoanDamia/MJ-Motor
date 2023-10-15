@@ -166,6 +166,8 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         ImGui::Checkbox("CubeBufferColors", &showCubeBufferColors);
 
+        ImGui::Checkbox("CubeCheckers", &showCubeCheckers);
+
         if (ImGui::CollapsingHeader("FPS"))
         {
             char title[25];
