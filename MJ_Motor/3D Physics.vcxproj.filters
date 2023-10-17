@@ -294,7 +294,7 @@
     <ClInclude Include="Modules\FBXLoader.h">
       <Filter>Sources\FBX</Filter>
     </ClInclude>
-    <ClInclude Include="TexLoader.h">
+    <ClInclude Include="Modules\TexLoader.h">
       <Filter>Sources\FBX</Filter>
     </ClInclude>
   </ItemGroup>
@@ -458,7 +458,7 @@
     <ClCompile Include="Modules\FBXLoader.cpp">
       <Filter>Sources\FBX</Filter>
     </ClCompile>
-    <ClCompile Include="TexLoader.cpp">
+    <ClCompile Include="Modules\TexLoader.cpp">
       <Filter>Sources\FBX</Filter>
     </ClCompile>
   </ItemGroup>

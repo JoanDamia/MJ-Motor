@@ -166,8 +166,8 @@
     <ClInclude Include="Modules\ModuleRenderer3D.h" />
     <ClInclude Include="Modules\ModuleWindow.h" />
     <ClInclude Include="Modules\Primitive.h" />
+    <ClInclude Include="Modules\TexLoader.h" />
     <ClInclude Include="Modules\Timer.h" />
-    <ClInclude Include="TexLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Application.cpp" />
@@ -222,8 +222,8 @@
     <ClCompile Include="Modules\ModuleRenderer3D.cpp" />
     <ClCompile Include="Modules\ModuleWindow.cpp" />
     <ClCompile Include="Modules\Primitive.cpp" />
+    <ClCompile Include="Modules\TexLoader.cpp" />
     <ClCompile Include="Modules\Timer.cpp" />
-    <ClCompile Include="TexLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Modules\Libraries\MathGeoLib\include\Geometry\KDTree.inl" />
