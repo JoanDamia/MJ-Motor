@@ -260,10 +260,11 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
-
+	
 	//Cube Direct Mode Render
 	if (App->editor->showCubeDirectMode)
 	{
+		/*
 		//creación de triangulos
 
 		glLineWidth(2.0f);
@@ -289,10 +290,11 @@ update_status ModuleRenderer3D::Update(float dt) {
 		glVertex3d(1, 0, 1); glVertex3d(1, 1, 1); glVertex3d(0, 1, 1);
 		glEnd();
 		glLineWidth(1.0f);
-
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+		*/
 	}
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+	
+	
 
 	//==============================================================================================================================================================
 
@@ -302,9 +304,9 @@ update_status ModuleRenderer3D::Update(float dt) {
     // When buffer object is bound with its ID, all pointers in gl*Pointer()
     // are treated as offset instead of real pointer.
 
-	//glPushMatrix();
+	/*glPushMatrix();
 	glTranslatef(-1, 0.5, 0.5);
-	glPopMatrix();
+	glPopMatrix();*/
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
