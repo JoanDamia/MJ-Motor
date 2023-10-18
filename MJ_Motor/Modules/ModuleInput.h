@@ -22,6 +22,7 @@ public:
 	bool Init();
 	update_status PreUpdate(float dt);
 	bool CleanUp();
+	char* droppedDir = nullptr;
 
 	KEY_STATE GetKey(int id) const
 	{
@@ -66,5 +67,6 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
+
 	//int mouse_z_motion;
 };

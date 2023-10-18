@@ -72,4 +72,6 @@ void FBXLoader::CleanUp()
 {
 	// detach log stream
 	aiDetachAllLogStreams();
+
+	
 }

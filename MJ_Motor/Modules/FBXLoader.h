@@ -14,7 +14,10 @@ struct MeshStorer
 {
 	MeshStorer() {}
 
-	~MeshStorer() {}
+	~MeshStorer() {
+		delete[num_vertex]vertex;
+		delete[num_index]index;
+	}
 
 	//Parameters
 	uint id_index = 0; // index in VRAM
@@ -36,7 +39,7 @@ public:
 	//Methods
 	void Debug();
 	static void FileLoader(const char* file_path, MeshStorer* ourMesh);
-	void CleanUp();
+	static void CleanUp();
 
 	static int meshArray[];
 };

@@ -112,6 +112,16 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				break;
+			}
+			case (SDL_DROPFILE):
+			{
+				droppedDir = e.drop.file;
+				LOG("NIBBA");
+				FBXLoader::FileLoader(droppedDir, &App->renderer3D->myMesh);
+				//App->renderer3D->inputDropped = true;
+				SDL_free(droppedDir);
+				break;
 			}
 		}
 	}
