@@ -39,7 +39,8 @@ public:
 	//Methods
 	void Debug();
 	static void FileLoader(const char* file_path, MeshStorer* ourMesh);
+	static void RenderAll();
 	static void CleanUp();
 
-	static int meshArray[];
+	static vector <MeshStorer*> meshesVector;
 };

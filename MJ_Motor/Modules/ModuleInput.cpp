@@ -119,7 +119,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				droppedDir = e.drop.file;
 				LOG("NIBBA");
 				FBXLoader::FileLoader(droppedDir, &App->renderer3D->myMesh);
-				//App->renderer3D->inputDropped = true;
+				fileDrop = true;
 				SDL_free(droppedDir);
 				break;
 			}

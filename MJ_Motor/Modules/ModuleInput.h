@@ -23,6 +23,10 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 	char* droppedDir = nullptr;
+	//MeshStorer myMesh;
+	bool fileDrop = false;
+	
+
 
 	KEY_STATE GetKey(int id) const
 	{

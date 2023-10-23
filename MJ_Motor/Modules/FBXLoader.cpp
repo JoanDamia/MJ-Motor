@@ -5,6 +5,10 @@
 
 #include "FBXLoader.h"
 
+
+vector <MeshStorer*>FBXLoader::meshesVector; 
+
+
 void FBXLoader::Debug()
 {
 	// Stream log messages to Debug window
@@ -42,6 +46,7 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
 					}
 				}
+				meshesVector.push_back(ourMesh);
 			}
 
 		}
@@ -49,22 +54,48 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		aiReleaseImport(scene);
 
-		ourMesh->RenderOneMesh();
+		//ourMesh->RenderOneMesh();
 	}
 	else
 		LOG("Error loading scene % s", file_path);
 }
 
+void FBXLoader::RenderAll() 
+{
+	for (int i = 0; i < meshesVector.size(); i++) 
+	{
+		meshesVector[i]->RenderOneMesh();
+	}
+}
+
 void MeshStorer::RenderOneMesh()
 {
-	glBegin(GL_TRIANGLES);
+	/*glBegin(GL_TRIANGLES);
 
 	for (int i = 0; i < num_index; i++)
 	{
 		glVertex3f(vertex[index[i] * 3], vertex[index[i] * 3 + 1], vertex[index[i] * 3 + 2]);
 	}
 
-	glEnd();
+	glEnd();*/
+
+	/*
+	// enable vertex arrays
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+
+	// before draw, specify vertex and index arrays with their offsets
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glDrawElements(GL_TRIANGLES,            // primitive type
+		num_index,                      // # of indices
+		GL_UNSIGNED_INT,         // data type
+		(void*)0);               // ptr to indices
+
+	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+	*/
 }
 
 
@@ -73,5 +104,6 @@ void FBXLoader::CleanUp()
 	// detach log stream
 	aiDetachAllLogStreams();
 
+	meshesVector.clear();
 	
 }

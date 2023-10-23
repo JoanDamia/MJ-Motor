@@ -198,14 +198,20 @@ bool ModuleRenderer3D::Init()
 
 	loadTextureImageData();   // Load pattern into image data array
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, IMAGE_COLS, IMAGE_ROWS, 0, GL_RGB,
-		GL_UNSIGNED_BYTE, imageData);  // Create texture from image data
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, IMAGE_COLS, IMAGE_ROWS, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);  // Create texture from image data
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
+
+	if (App->input->fileDrop == true) 
+	{
+		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
+	}
+
+	//FBXLoader::FileLoader(file_path, &myMesh);
 
 	return ret;
 }
@@ -239,7 +245,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
-	FBXLoader::FileLoader(file_pathM, &myMesh);
+	FBXLoader::RenderAll();
 
 	//==============================================================================================================================================================
 
