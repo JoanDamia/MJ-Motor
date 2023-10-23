@@ -70,14 +70,14 @@ void FBXLoader::RenderAll()
 
 void MeshStorer::RenderOneMesh()
 {
-	/*glBegin(GL_TRIANGLES);
+	glBegin(GL_TRIANGLES);
 
 	for (int i = 0; i < num_index; i++)
 	{
 		glVertex3f(vertex[index[i] * 3], vertex[index[i] * 3 + 1], vertex[index[i] * 3 + 2]);
 	}
 
-	glEnd();*/
+	glEnd();
 
 	/*
 	// enable vertex arrays

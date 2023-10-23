@@ -285,7 +285,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	glTranslatef(-1, 0.5, 0.5);
 	glPopMatrix();*/
 
-
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId); 
 
