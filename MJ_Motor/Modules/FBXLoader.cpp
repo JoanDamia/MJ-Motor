@@ -24,6 +24,8 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 	{
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
+			MeshStorer* ourMesh = new MeshStorer();
+
 			// Copy vertices
 			ourMesh->num_vertex = scene->mMeshes[i]->mNumVertices;
 			ourMesh->vertex = new float[ourMesh->num_vertex * 3];
