@@ -181,11 +181,15 @@ bool ModuleRenderer3D::Init()
 	//Cube Buffer Creation
 	glGenBuffers(1, &vboId); //it's like the buffer ID
 	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
+	
+	//Cube Buffer Data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(colors), 0, GL_STATIC_DRAW); //what the buffer will work with. Data.
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);                             // copy vertices starting from 0 offest, 0 as array start
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);                // copy normals after vertices, We start with the vertices size, when in the last buffer we started from 0
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), sizeof(colors), colors);  // copy colours after normals, same as beffore adding normals, as it's the space we occupied
-	glBindBuffer(GL_ARRAY_BUFFER, 0); //buffer closed
+	
+	//Close Cube Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &iboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);

@@ -48,6 +48,10 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
 					}
 				}
+				//Generate Buffer
+				MeshStorer::GenerateMeshBuffer(ourMesh);
+
+				//Store Mesh
 				meshesVector.push_back(ourMesh);
 			}
 
@@ -72,16 +76,19 @@ void FBXLoader::RenderAll()
 
 void MeshStorer::RenderOneMesh()
 {
+	/*
 	glBegin(GL_TRIANGLES);
 
+	
 	for (int i = 0; i < num_index; i++)
 	{
 		glVertex3f(vertex[index[i] * 3], vertex[index[i] * 3 + 1], vertex[index[i] * 3 + 2]);
 	}
 
 	glEnd();
+	*/
 
-	/*
+
 	// enable vertex arrays
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
@@ -97,7 +104,27 @@ void MeshStorer::RenderOneMesh()
 		(void*)0);               // ptr to indices
 
 	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
-	*/
+	
+}
+
+
+void MeshStorer::GenerateMeshBuffer(MeshStorer* ourMesh)
+{
+	//Mesh Buffer
+	//Mesh Buffer Generator
+	glGenBuffers(1, (GLuint*)&(ourMesh->id_vertex));
+	glGenBuffers(1, (GLuint*)&(ourMesh->id_index));
+	glBindBuffer(GL_ARRAY_BUFFER, ourMesh->id_vertex);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ourMesh->id_index);
+
+	//Mesh Buffer Data
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ourMesh->num_vertex * 3, ourMesh->vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ourMesh->num_index, ourMesh->index, GL_STATIC_DRAW);
+
+	//Close Mesh Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 }
 
 

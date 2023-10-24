@@ -29,6 +29,7 @@ struct MeshStorer
 
 	//Methods
 	void RenderOneMesh();
+	static void GenerateMeshBuffer(MeshStorer* ourMesh);
 
 };
 
