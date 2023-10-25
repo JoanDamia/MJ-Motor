@@ -33,9 +33,17 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
-    void loadTextureImageData();
+
     void CheckersCube();
+    void LoadTextureImageData();
+    void CreateTextureImageData();
+
     void DirectModeCube();
+
+    void GenerateCubeBuffer();
+    void RenderCubeBuffer();
+
+    void GenerateFrameBuffer();
 
 public:
 

@@ -141,80 +141,22 @@ bool ModuleRenderer3D::Init()
 	//==============================================================================================================================================================
 
 	//Frame Buffer
-	//Frame Buffer Creation
-	glGenFramebuffers(1, &frameBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-	//Frame Buffer Attachments
-	//Frame Buffer Texture
-	glGenTextures(1, &texColorBuffer);
-	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
-
-	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glFramebufferTexture2D(
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
-
-	//Render Buffer
-	//Render Buffer Creation
-	glGenRenderbuffers(1, &rboDepthStencil);
-	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 1024);
-	glBindRenderbuffer(GL_FRAMEBUFFER, 0);
-
-	glFramebufferRenderbuffer(
-		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
-
-	//Using Frame Buffer
-	//glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-
-	//==============================================================================================================================================================
+	GenerateFrameBuffer();
 
 	//Cube Buffer
-	//Cube Buffer Creation
-	glGenBuffers(1, &vboId); //it's like the buffer ID
-	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
+	GenerateCubeBuffer();
 	
-	//Cube Buffer Data
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(colors), 0, GL_STATIC_DRAW); //what the buffer will work with. Data.
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);                             // copy vertices starting from 0 offest, 0 as array start
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);                // copy normals after vertices, We start with the vertices size, when in the last buffer we started from 0
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), sizeof(colors), colors);  // copy colours after normals, same as beffore adding normals, as it's the space we occupied
-	
-	//Close Cube Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &iboId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 	//==============================================================================================================================================================
 
 	// Checkers Texture
+	
+	// Load the imageData array with checkerboad pattern
+	LoadTextureImageData();
 
-	loadTextureImageData();   // Load pattern into image data array
+	// Create texture from image data
+	CreateTextureImageData();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, IMAGE_COLS, IMAGE_ROWS, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);  // Create texture from image data
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
-
-	if (App->input->fileDrop == true) 
-	{
-		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
-	}
-
+	
 	//FBXLoader::FileLoader(file_path, &myMesh);
 
 	return ret;
@@ -253,7 +195,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
-	//Translate of the cubes position
+	//Translate the cubes position
 
 	//glPushMatrix();
 	glTranslatef(-3, 1, 0);
@@ -268,66 +210,16 @@ update_status ModuleRenderer3D::Update(float dt) {
 	glTranslatef(-2.5, -1, -0.5);
 	glPopMatrix();
 
-	//==============================================================================================================================================================
-
-	
-	//Cube Direct Mode Render
-	/*
-	
-	*/
-	
 
 	//==============================================================================================================================================================
 
 	//Cube Buffer Render
-	
-	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
-    // When buffer object is bound with its ID, all pointers in gl*Pointer()
-    // are treated as offset instead of real pointer.
+	RenderCubeBuffer();
 
-	/*glPushMatrix();
-	glTranslatef(-1, 0.5, 0.5);
-	glPopMatrix();*/
-
-	
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId); 
-
-	// enable vertex arrays
-	glEnableClientState(GL_NORMAL_ARRAY);
-
-	if (App->editor->showCubeBufferColors)
-	{
-		glEnableClientState(GL_COLOR_ARRAY);
-	}
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-
-	// before draw, specify vertex and index arrays with their offsets
-	glNormalPointer(GL_FLOAT, 0, (void*)sizeof(vertices));
-	glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(vertices) + sizeof(normals)));
-	glVertexPointer(3, GL_FLOAT, 0, 0); 
-
-	glDrawElements(GL_TRIANGLES,            // primitive type
-		36,                      // # of indices
-		GL_UNSIGNED_INT,         // data type
-		(void*)0);               // ptr to indices
-
-	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-
-	// it is good idea to release VBOs with ID 0 after use.
-	// Once bound with 0, all pointers in gl*Pointer() behave as real
-	// pointer, so, normal vertex array operations are re-activated
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
 }
+
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
@@ -378,19 +270,111 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 }
 
-// Load the imageData array with checkerboad pattern
-void ModuleRenderer3D::loadTextureImageData() {
-	int value;
-	for (int row = 0; row < IMAGE_ROWS; row++) {
-		for (int col = 0; col < IMAGE_COLS; col++) {
-			// Each cell is 8x8, value is 0 or 255 (black or white)
-			value = (((row & 0x8) == 0) ^ ((col & 0x8) == 0)) * 255;
-			imageData[row][col][0] = (GLubyte)value;
-			imageData[row][col][1] = (GLubyte)value;
-			imageData[row][col][2] = (GLubyte)value;
-		}
-	}
+
+void ModuleRenderer3D::GenerateCubeBuffer()
+{
+	//Cube Buffer Creation
+	glGenBuffers(1, &vboId); //it's like the buffer ID
+	glBindBuffer(GL_ARRAY_BUFFER, vboId); //indicator that we are about to work with the buffer in the upper line
+
+	//Cube Buffer Data
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(colors), 0, GL_STATIC_DRAW); //what the buffer will work with. Data.
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);                             // copy vertices starting from 0 offest, 0 as array start
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);                // copy normals after vertices, We start with the vertices size, when in the last buffer we started from 0
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), sizeof(colors), colors);  // copy colours after normals, same as beffore adding normals, as it's the space we occupied
+
+	//Close Cube Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, &iboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+
+void ModuleRenderer3D::RenderCubeBuffer()
+{
+	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
+	// When buffer object is bound with its ID, all pointers in gl*Pointer()
+	// are treated as offset instead of real pointer.
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+
+	// enable vertex arrays
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	if (App->editor->showCubeBufferColors)
+	{
+		glEnableClientState(GL_COLOR_ARRAY);
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+
+	// before draw, specify vertex and index arrays with their offsets
+	glNormalPointer(GL_FLOAT, 0, (void*)sizeof(vertices));
+	glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(vertices) + sizeof(normals)));
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glDrawElements(GL_TRIANGLES,            // primitive type
+		36,                      // # of indices
+		GL_UNSIGNED_INT,         // data type
+		(void*)0);               // ptr to indices
+
+	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+
+	// it is good idea to release VBOs with ID 0 after use.
+	// Once bound with 0, all pointers in gl*Pointer() behave as real
+	// pointer, so, normal vertex array operations are re-activated
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+void ModuleRenderer3D::GenerateFrameBuffer()
+{
+	//Frame Buffer Creation
+	glGenFramebuffers(1, &frameBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+	//Frame Buffer Attachments
+	//Frame Buffer Texture
+	glGenTextures(1, &texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glFramebufferTexture2D(
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+
+	//Render Buffer
+	//Render Buffer Creation
+	glGenRenderbuffers(1, &rboDepthStencil);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 1024);
+	glBindRenderbuffer(GL_FRAMEBUFFER, 0);
+
+	glFramebufferRenderbuffer(
+		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
+
+	//Using Frame Buffer
+	//glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+}
+
 
 void ModuleRenderer3D::CheckersCube()
 {
@@ -427,6 +411,38 @@ void ModuleRenderer3D::CheckersCube()
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
 	glEnd();
+
+}
+
+
+void ModuleRenderer3D::LoadTextureImageData() 
+{
+	int value;
+	for (int row = 0; row < IMAGE_ROWS; row++) {
+		for (int col = 0; col < IMAGE_COLS; col++) {
+			// Each cell is 8x8, value is 0 or 255 (black or white)
+			value = (((row & 0x8) == 0) ^ ((col & 0x8) == 0)) * 255;
+			imageData[row][col][0] = (GLubyte)value;
+			imageData[row][col][1] = (GLubyte)value;
+			imageData[row][col][2] = (GLubyte)value;
+		}
+	}
+}
+
+void ModuleRenderer3D::CreateTextureImageData()
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, IMAGE_COLS, IMAGE_ROWS, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
+
+	if (App->input->fileDrop == true)
+	{
+		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
+	}
 
 }
 
