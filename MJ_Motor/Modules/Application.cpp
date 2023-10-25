@@ -72,17 +72,17 @@ update_status Application::Update()
 	
 	for (std::vector<Module*>::const_iterator it = list_modules.cbegin(); it != list_modules.cend() && ret == UPDATE_CONTINUE; ++it)
 	{
-		(*it)->PreUpdate(dt);
+		ret = (*it)->PreUpdate(dt);
 	}
 
 	for (std::vector<Module*>::const_iterator it = list_modules.cbegin(); it != list_modules.cend() && ret == UPDATE_CONTINUE; ++it)
 	{
-		(*it)->Update(dt);
+		ret = (*it)->Update(dt);
 	}
 
 	for (std::vector<Module*>::const_iterator it = list_modules.cbegin(); it != list_modules.cend() && ret == UPDATE_CONTINUE; ++it)
 	{
-		(*it)->PostUpdate(dt);
+		ret = (*it)->PostUpdate(dt);
 	}
 
 	FinishUpdate();
