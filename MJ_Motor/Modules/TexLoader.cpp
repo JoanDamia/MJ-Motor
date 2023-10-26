@@ -9,34 +9,38 @@
 
 #include "TexLoader.h"
 
-void TexLoader::LoadTexture()
+GLuint TexLoader::LoadTexture(char const* const thefilename)
 {
 	ILuint tex_Lenna;
-
 	ilGenImages(1, &tex_Lenna);
-
 	ilBindImage(tex_Lenna);
 
 	//Load an image
-	ilLoadImage("Lenna_(test_image)");
+	ilLoadImage(thefilename);
 
-	//Save an image
-	ilEnable(IL_FILE_OVERWRITE);
-	ilSaveImage("Lenna_(test_image)");
+	void data = ilGetData();
+	if (!data) {
+		ilBindImage(0);
+		ilDeleteImages(1, &tex_Lenna);
+		return 0;
+	}
 
-	//Detect an error
-	ILenum Error;
-	Error = ilGetError();
+	int const width = ilGetInteger(IL_IMAGE_WIDTH);
+	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
+	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
+	int const format = ilGetInteger(IL_IMAGE_FORMAT); // matches OpenGL
 
-	//Get an image's width and height
-	ILuint Width, Height;
-	Width = ilGetInteger(IL_IMAGE_WIDTH);
-	Height = ilGetInteger(IL_IMAGE_HEIGHT);
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	//Getting an OpenGL texture
-	GLuint Texture;
-	Texture = ilutGLBindTexImage();
+	glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_FALSE);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0); // rows are tightly packed
+	glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+	glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // pixels are tightly packed
 
-	//Delete an image
-	ilDeleteImages(1, &tex_Lenna);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, data);
+
+	return textureID;
 }
