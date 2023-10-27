@@ -191,6 +191,11 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
+	if (App->input->fileDrop == true)
+	{
+		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
+	}
+
 	FBXLoader::RenderAll();
 
 	//==============================================================================================================================================================
@@ -438,12 +443,6 @@ void ModuleRenderer3D::CreateTextureImageData()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
-
-	if (App->input->fileDrop == true)
-	{
-		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
-	}
-
 }
 
 void ModuleRenderer3D::DirectModeCube() {

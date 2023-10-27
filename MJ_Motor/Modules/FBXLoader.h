@@ -26,6 +26,8 @@ struct MeshStorer
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
 	float* vertex = nullptr;
+	uint id_texture = 0;
+	const char* texture_path = "C:/Users/Miguel/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/Textures/Lenna_(test_image).png";
 
 	//Methods
 	void RenderOneMesh();

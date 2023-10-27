@@ -8,7 +8,7 @@ class TexLoader
 public:
 
 	//Methods
-	GLuint LoadTexture(char const* const thefilename);
+	static GLuint LoadTexture(char const* const thefilename);
 	void CleanUp();
 
 };

@@ -9,8 +9,10 @@
 
 #include "TexLoader.h"
 
-GLuint TexLoader::LoadTexture(char const* const thefilename)
+GLuint TexLoader::LoadTexture(char const* thefilename)
 {
+	ilInit();
+
 	ILuint tex_Lenna;
 	ilGenImages(1, &tex_Lenna);
 	ilBindImage(tex_Lenna);
@@ -18,21 +20,18 @@ GLuint TexLoader::LoadTexture(char const* const thefilename)
 	//Load an image
 	ilLoadImage(thefilename);
 
-	void data = ilGetData();
-	if (!data) {
-		ilBindImage(0);
-		ilDeleteImages(1, &tex_Lenna);
-		return 0;
-	}
+	BYTE* data = ilGetData();
 
+	//Image properties
 	int const width = ilGetInteger(IL_IMAGE_WIDTH);
 	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
 	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
 	int const format = ilGetInteger(IL_IMAGE_FORMAT); // matches OpenGL
 
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	//Generate Texture with the image properties
+	GLuint tex_ID;
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
 	glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_FALSE);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0); // rows are tightly packed
@@ -42,5 +41,5 @@ GLuint TexLoader::LoadTexture(char const* const thefilename)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, data);
 
-	return textureID;
+	return tex_ID;
 }
