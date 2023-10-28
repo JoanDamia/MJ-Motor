@@ -201,29 +201,21 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
-	//Translate the cubes position
-
 	//glPushMatrix();
-	glTranslatef(-3, 1, 0);
-	glPopMatrix();
 
 	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)
 	{
+		//Translate the cubes position
+		glTranslatef(-3, 1, 0);
+		glPopMatrix();
+
 		CheckersCube();
 	}
 
-	//glPushMatrix();
-	glTranslatef(-2.5, -1, -0.5);
-	glPopMatrix();
-
-
 	//==============================================================================================================================================================
 
-
-	RenderBuffer();
-
-
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
 }
@@ -300,7 +292,7 @@ void ModuleRenderer3D::GenerateCubeBuffer()
 }
 
 
-void ModuleRenderer3D::RenderBuffer()
+void ModuleRenderer3D::RenderCubeBuffer()
 {
 	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
 	// When buffer object is bound with its ID, all pointers in gl*Pointer()
@@ -340,8 +332,6 @@ void ModuleRenderer3D::RenderBuffer()
 	// pointer, so, normal vertex array operations are re-activated
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 

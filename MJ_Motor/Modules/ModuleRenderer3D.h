@@ -41,7 +41,7 @@ public:
     void DirectModeCube();
 
     void GenerateCubeBuffer();
-    void RenderBuffer();
+    void RenderCubeBuffer();
 
     void GenerateFrameBuffer();
 
