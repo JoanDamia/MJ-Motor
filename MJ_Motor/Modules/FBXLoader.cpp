@@ -4,7 +4,7 @@
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 #include "FBXLoader.h"
-#include "TexLoader.h"
+
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
 
@@ -48,9 +48,6 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
 					}
 				}
-				//Store Texture ID on Mesh struct
-				ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->texture_path);
-
 				//Generate Buffer
 				MeshStorer::GenerateMeshBuffer(ourMesh);
 
@@ -91,11 +88,6 @@ void MeshStorer::RenderOneMesh()
 	glEnd();
 	*/
 
-	//Mesh Texture
-	id_texture = TexLoader::LoadTexture(texture_path);
-	glActiveTexture(GL_TEXTURE0);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, id_texture);
 
 	// enable vertex arrays
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
@@ -111,12 +103,8 @@ void MeshStorer::RenderOneMesh()
 		GL_UNSIGNED_INT,         // data type
 		(void*)0);               // ptr to indices
 
-	// Disable vertex arrays
-	glDisableClientState(GL_VERTEX_ARRAY);  
+	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
 	
-	//Disable Texture
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDisable(GL_TEXTURE_2D);
 }
 
 

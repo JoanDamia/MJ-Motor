@@ -71,8 +71,8 @@ public:
     //Render Buffer Id
     uint rboDepthStencil;
 
-    const char* file_pathM = "C:/Users/Miguel/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
-    const char* file_path = "C:/Users/jdami/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
+    const char* file_path = "C:/Users/Miguel/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
+    const char* file_pathM = "C:/Users/jdami/Documents/GitHub/MJ-Motor/MJ_Motor/Assets/BakerHouse/BakerHouse.fbx";
     MeshStorer myMesh;
 
     //Chekers Texture
