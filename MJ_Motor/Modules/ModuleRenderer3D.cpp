@@ -143,9 +143,15 @@ bool ModuleRenderer3D::Init()
 	//Frame Buffer
 	GenerateFrameBuffer();
 
-	//Cube Buffer
-	GenerateCubeBuffer();
-	
+	//Render Mesh with File path
+	FBXLoader::FileLoader(file_pathM, &myMesh);
+
+	//Render Mesh with File drop
+	if (App->input->fileDrop == true)
+	{
+		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
+	}
+
 	//==============================================================================================================================================================
 
 	// Checkers Texture
@@ -201,6 +207,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	glTranslatef(-3, 1, 0);
 	glPopMatrix();
 
+	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)
 	{
 		CheckersCube();
@@ -213,8 +220,9 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	//==============================================================================================================================================================
 
-	//Cube Buffer Render
-	RenderCubeBuffer();
+
+	RenderBuffer();
+
 
 
 	return UPDATE_CONTINUE;
@@ -223,8 +231,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
-{
-	
+{	
 	App->editor->DrawEditor();
 
 	SDL_GL_SwapWindow(App->window->window);
@@ -293,7 +300,7 @@ void ModuleRenderer3D::GenerateCubeBuffer()
 }
 
 
-void ModuleRenderer3D::RenderCubeBuffer()
+void ModuleRenderer3D::RenderBuffer()
 {
 	// bind VBOs with IDs and set the buffer offsets of the bound VBOs
 	// When buffer object is bound with its ID, all pointers in gl*Pointer()
@@ -438,20 +445,13 @@ void ModuleRenderer3D::CreateTextureImageData()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	glEnable(GL_TEXTURE_2D);  // Enable 2D texture 
-
-	if (App->input->fileDrop == true)
-	{
-		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
-	}
-
 }
 
 void ModuleRenderer3D::DirectModeCube() {
+	
 	if (App->editor->showCubeDirectMode)
-	{
-		
+	{		
 		//creación de triangulos
-
 		glLineWidth(2.0f);
 		glBegin(GL_TRIANGLES);
 

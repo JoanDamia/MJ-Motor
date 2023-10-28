@@ -18,13 +18,6 @@ GLuint TexLoader::LoadTexture(char const* const thefilename)
 	//Load an image
 	ilLoadImage(thefilename);
 
-	void data = ilGetData();
-	if (!data) {
-		ilBindImage(0);
-		ilDeleteImages(1, &tex_Lenna);
-		return 0;
-	}
-
 	int const width = ilGetInteger(IL_IMAGE_WIDTH);
 	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
 	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
@@ -40,7 +33,7 @@ GLuint TexLoader::LoadTexture(char const* const thefilename)
 	glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // pixels are tightly packed
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, 0);
 
 	return textureID;
 }

@@ -164,7 +164,7 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         //ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
 
-        ImGui::Checkbox("CubeBufferColors", &showCubeBufferColors);
+        //ImGui::Checkbox("CubeBufferColors", &showCubeBufferColors);
 
         ImGui::Checkbox("CubeCheckers", &showCubeCheckers);
 
