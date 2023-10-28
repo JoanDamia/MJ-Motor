@@ -153,15 +153,6 @@ bool ModuleRenderer3D::Init()
 	}
 
 	//==============================================================================================================================================================
-
-	// Checkers Texture
-	
-	// Load the imageData array with checkerboad pattern
-	LoadTextureImageData();
-
-	// Create texture from image data
-	CreateTextureImageData();
-
 	
 	//FBXLoader::FileLoader(file_path, &myMesh);
 
@@ -202,10 +193,18 @@ update_status ModuleRenderer3D::Update(float dt) {
 	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)
 	{
+		// Checkers Texture
+		// Load the imageData array with checkerboad pattern
+		LoadTextureImageData();
+
+		// Create texture from image data
+		CreateTextureImageData();
+
 		//Translate the cubes position
 		glTranslatef(-3, 1, 0);
 		glPopMatrix();
 
+		//Render Checkers Cube
 		CheckersCube();
 	}
 

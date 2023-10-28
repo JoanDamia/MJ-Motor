@@ -26,7 +26,7 @@ public:
 	bool showDemo;
 	bool showCubeDirectMode = false;
 	bool showCubeBufferColors = false;
-	bool showCubeCheckers = true;
+	bool showCubeCheckers = false;
 
 	//FPS Graph vectors
 	vector<float> fps_log;
