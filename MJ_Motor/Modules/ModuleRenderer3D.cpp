@@ -41,6 +41,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {		
 	LOG("Creating 3D Renderer context");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Creating 3D Renderer context");
 	bool ret = true;
 	
 	//Create context
@@ -48,10 +49,13 @@ bool ModuleRenderer3D::Init()
 	if(context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
 	//Glew Initialitation
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Initializing Glew");
+
 	GLenum err = glewInit();
 	// … check for errors
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
@@ -68,7 +72,10 @@ bool ModuleRenderer3D::Init()
 	{
 		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
+		{ 
 			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "Warning: Unable to set VSync!");
+		}
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -79,6 +86,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "Error initializing OpenGL!");
 			ret = false;
 		}
 
@@ -91,6 +99,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "Error initializing OpenGL!");
 			ret = false;
 		}
 		
@@ -105,6 +114,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "Error initializing OpenGL!");
 			ret = false;
 		}
 		

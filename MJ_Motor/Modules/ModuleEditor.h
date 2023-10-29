@@ -104,6 +104,15 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	//ImGui Windows
+	void ImguiRenderWindow();
+	void ImGuiInspectorWindow();
+
+	//ImGui Windows Booleans
+	bool showScene = true;
+	bool showInspector = true;
+	bool showConsole = true;
+
 	//ImGui CheckBox booleans
 	bool showDemo;
 	bool showCubeDirectMode = false;

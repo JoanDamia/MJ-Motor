@@ -22,12 +22,15 @@ ModuleInput::~ModuleInput()
 bool ModuleInput::Init()
 {
 	LOG("Init SDL input event system");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Init SDL input event system");
+
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -117,7 +120,8 @@ update_status ModuleInput::PreUpdate(float dt)
 			case (SDL_DROPFILE):
 			{
 				droppedDir = e.drop.file;
-				LOG("NIBBA");
+				LOG("File Dropped");
+				App->editor->console_log.AddLog(__FILE__, __LINE__, "File Dropped");
 				FBXLoader::FileLoader(droppedDir, &App->renderer3D->myMesh);
 				fileDrop = true;
 				SDL_free(droppedDir);

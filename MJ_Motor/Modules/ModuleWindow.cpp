@@ -17,11 +17,13 @@ ModuleWindow::~ModuleWindow()
 bool ModuleWindow::Init()
 {
 	LOG("Init SDL window & surface");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Init SDL window & surface");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 	else
@@ -64,6 +66,7 @@ bool ModuleWindow::Init()
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "Window could not be created! SDL_Error: %s", SDL_GetError());
 			ret = false;
 		}
 		else

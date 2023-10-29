@@ -4,7 +4,7 @@
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 #include "FBXLoader.h"
-
+#include "Application.h"
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
 
@@ -30,7 +30,8 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 			ourMesh->num_vertex = scene->mMeshes[i]->mNumVertices;
 			ourMesh->vertex = new float[ourMesh->num_vertex * 3];
 			memcpy(ourMesh->vertex, scene->mMeshes[i]->mVertices, sizeof(float) * ourMesh->num_vertex * 3);
-			LOG("New mesh with %d vertices", ourMesh->num_vertex);
+			LOG("New mesh with %d vertex", ourMesh->num_vertex);
+			//App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d vertex", ourMesh->num_vertex);
 
 			// Copy faces
 			if (scene->mMeshes[i]->HasFaces())
@@ -42,10 +43,14 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 					if (scene->mMeshes[i]->mFaces[j].mNumIndices != 3) 
 					{
 						LOG("WARNING, geometry face with != 3 indices!");
+						//App->editor->console_log.AddLog(__FILE__, __LINE__, "WARNING, geometry face with != 3 indices!");
 					}
 					else
 					{
 						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
+						LOG("New mesh with %d index", ourMesh->num_index);
+						//App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
+
 					}
 				}
 				//Generate Buffer
@@ -64,6 +69,7 @@ void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
 	}
 	else
 		LOG("Error loading scene % s", file_path);
+		//App->editor->console_log.AddLog(__FILE__, __LINE__, "Error loading scene % s", file_path);
 }
 
 void FBXLoader::RenderAll() 
