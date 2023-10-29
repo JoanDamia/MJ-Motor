@@ -23,6 +23,8 @@ bool ModuleEditor::Init() {
 
 	ImGui::StyleColorsDark();
 
+    console_log.AddLog(__FILE__, __LINE__, "INITIALIZING CONSOLE LOGS: /n");
+
 	return false;
 }
 
@@ -178,6 +180,14 @@ update_status ModuleEditor::PostUpdate(float dt)
         }
 
         ImGui::End();
+
+        //==============================================================================================================================================================
+
+        //ImGui Console Window
+        console_log.Draw("Console");
+
+        //==============================================================================================================================================================
+
     }
 
     // 3. Show another simple window.

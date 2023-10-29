@@ -7,6 +7,88 @@
 
 #include <vector>
 
+struct Console
+{
+	//Parameters
+	ImGuiTextBuffer Buf;
+	ImGuiTextFilter Filter;
+	ImVector<int> LineOffsets;
+
+	bool ScrollToBottom;
+
+	//Functions
+	void Clear()
+	{
+		Buf.clear();
+	}
+
+	void AddLog(const char file[], int line, const char* logText, ...)
+	{
+		static char tmp_string[4096];
+		static char tmp_string2[4096];
+		static va_list  ap;
+
+		va_start(ap, logText);
+		vsprintf_s(tmp_string, 4096, logText, ap);
+
+		va_end(ap);
+		sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
+
+		OutputDebugString(tmp_string2);
+
+		int old_size = Buf.size();
+		va_list args;
+		va_start(args, logText);
+		Buf.appendfv(logText, args);
+		Buf.appendfv("\n", args);
+		va_end(args);
+
+		for (int new_size = Buf.size(); old_size < new_size; old_size++)
+		{
+			if (Buf[old_size] == '\n')
+			{
+				LineOffsets.push_back(old_size);
+			}
+		}
+		ScrollToBottom = true;
+	}
+
+	void Draw(const char* title, bool* p_opened = NULL)
+	{
+		ImGui::SetNextWindowSize(ImVec2(500, 400));
+		ImGui::Begin(title, p_opened);
+
+		if (ImGui::Button("Clear"))
+		{
+			Clear();
+		}
+
+		ImGui::SameLine();
+		bool copy = ImGui::Button("Copy");
+		ImGui::Separator();
+		ImGui::BeginChild("scrolling");
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
+
+		if (copy)
+		{
+			ImGui::LogToClipboard();
+		}
+
+		ImGui::TextUnformatted(Buf.begin());
+
+		if (ScrollToBottom)
+		{
+			ImGui::SetScrollHereY(1.0f);
+		}
+
+		ScrollToBottom = false;
+
+		ImGui::PopStyleVar();
+		ImGui::EndChild();
+		ImGui::End();
+	}
+};
+
 class ModuleEditor : public Module
 {
 public:
@@ -27,6 +109,9 @@ public:
 	bool showCubeDirectMode = false;
 	bool showCubeBufferColors = false;
 	bool showCubeCheckers = false;
+
+	//Console struct
+	Console console_log;
 
 	//FPS Graph vectors
 	vector<float> fps_log;

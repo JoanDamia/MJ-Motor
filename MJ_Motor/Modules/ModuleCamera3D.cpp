@@ -23,6 +23,8 @@ ModuleCamera3D::~ModuleCamera3D()
 bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Setting up the camera");
+
 	bool ret = true;
 
 	return ret;
