@@ -114,10 +114,18 @@ public:
 	bool showConsole = true;
 
 	//ImGui CheckBox booleans
+	//Tool Bar booleans
 	bool showDemo;
 	bool showCubeDirectMode = false;
 	bool showCubeBufferColors = false;
 	bool showCubeCheckers = false;
+
+	//Inspector booleans
+	bool showVSYNC = true;
+	bool showDepthTest = false;
+	bool showCullFace = false;
+	bool showLighting = false;
+	bool showColorMaterial = false;
 
 	//Console struct
 	Console console_log;

@@ -240,52 +240,7 @@ void ModuleEditor::ImguiRenderWindow()
 // -----------------------------------------------------------------        
 void ModuleEditor::ImGuiInspectorWindow()
 {
-    ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize);
-
-    if (ImGui::BeginMenuBar())
-    {
-        // Help menu
-        if (ImGui::BeginMenu("Help"))
-        {
-            if (ImGui::MenuItem("Gui Demo"))
-                showDemo = !showDemo;
-
-            if (ImGui::MenuItem("Documentation"))
-                ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
-
-            if (ImGui::MenuItem("Download latest"))
-                ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/releases", NULL, NULL, SW_SHOWDEFAULT);
-
-            if (ImGui::MenuItem("Report a bug"))
-                ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/issues", NULL, NULL, SW_SHOWDEFAULT);
-
-            if (ImGui::MenuItem("About"))
-                ShellExecuteA(NULL, "open", "https://learnopengl.com/", NULL, NULL, SW_SHOWDEFAULT);
-
-            if (ImGui::MenuItem("Support"))
-                ShellExecuteA(NULL, "open", "https://www.youtube.com/watch?v=2C4lFUpI_4U", NULL, NULL, SW_SHOWDEFAULT);
-
-            ImGui::EndMenu();
-        }
-
-        // Configuration menu
-        if (ImGui::BeginMenu("Configuration"))
-        {
-            if (ImGui::MenuItem("Options"))
-                showDemo = !showDemo;
-
-            if (ImGui::MenuItem("Vsync"));
-
-            if (ImGui::MenuItem("Input"));
-
-            if (ImGui::MenuItem("Audio"));
-
-
-            ImGui::EndMenu();
-        }
-
-        ImGui::EndMenuBar();
-    }
+    ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
     ImGui::Text("MJ - Ventana 1");               // Display some text (you can use a format strings too)
 
@@ -304,6 +259,16 @@ void ModuleEditor::ImGuiInspectorWindow()
         ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
         sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
         ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+    }
+
+    if (ImGui::CollapsingHeader("Modules"))
+    {
+        ImGui::Text("Renderer:");
+        ImGui::Checkbox("VSYNC", &showVSYNC);
+        ImGui::Checkbox("Depth Test", &showDepthTest);
+        ImGui::Checkbox("Cull Face", &showCullFace);
+        ImGui::Checkbox("Lightning", &showLighting);
+        ImGui::Checkbox("Color Material", &showColorMaterial);
     }
 
     ImGui::End();

@@ -218,6 +218,56 @@ update_status ModuleRenderer3D::Update(float dt) {
 		CheckersCube();
 	}
 
+	//Show VSYNC with CheckBox
+	if (App->editor->showVSYNC)
+	{
+		SDL_GL_SetSwapInterval(1);
+	}
+	else
+	{
+		SDL_GL_SetSwapInterval(0);
+	}
+
+	//Show Depth Test with CheckBox
+	if (App->editor->showDepthTest)
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+	else
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+
+	//Show Cull Face with CheckBox
+	if (App->editor->showCullFace)
+	{
+		glDisable(GL_CULL_FACE);
+	}
+	else
+	{
+		glEnable(GL_CULL_FACE);
+	}
+
+	//Show Lighting with CheckBox
+	if (App->editor->showLighting)
+	{
+		glDisable(GL_LIGHTING);
+	}
+	else
+	{
+		glEnable(GL_LIGHTING);
+	}
+
+	//Show Color Material with CheckBox
+	if (App->editor->showLighting)
+	{
+		glDisable(GL_COLOR_MATERIAL);
+	}
+	else
+	{
+		glEnable(GL_COLOR_MATERIAL);
+	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
