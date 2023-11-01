@@ -97,7 +97,6 @@ update_status ModuleEditor::PostUpdate(float dt)
             if (ImGui::BeginMenu("File"))
             {
                 if (ImGui::MenuItem("Gui Demo"))
-                    showDemo = !showDemo;
 
                 if (ImGui::MenuItem("Documentation"))
                     ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
@@ -133,7 +132,6 @@ update_status ModuleEditor::PostUpdate(float dt)
             if (ImGui::BeginMenu("About"))
             {
                 if (ImGui::MenuItem("Options"))
-                    showDemo = !showDemo;
 
                 if (ImGui::MenuItem("Vsync"));
 
@@ -246,11 +244,9 @@ void ModuleEditor::ImGuiInspectorWindow()
 
     //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
-    //ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
+    ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
 
-    //ImGui::Checkbox("CubeBufferColors", &showCubeBufferColors);
-
-    ImGui::Checkbox("CubeCheckers", &showCubeCheckers);
+    ImGui::Checkbox("Checkers Cube", &showCubeCheckers);
 
     if (ImGui::CollapsingHeader("FPS"))
     {
@@ -261,14 +257,19 @@ void ModuleEditor::ImGuiInspectorWindow()
         ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
     }
 
-    if (ImGui::CollapsingHeader("Modules"))
+    if (ImGui::CollapsingHeader("Modules", NULL, ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Text("Renderer:");
-        ImGui::Checkbox("VSYNC", &showVSYNC);
-        ImGui::Checkbox("Depth Test", &showDepthTest);
-        ImGui::Checkbox("Cull Face", &showCullFace);
-        ImGui::Checkbox("Lightning", &showLighting);
-        ImGui::Checkbox("Color Material", &showColorMaterial);
+        ImGui::Checkbox("VSYNC", &activateVSYNC);
+        ImGui::Checkbox("Depth Test", &activateDepthTest);
+        ImGui::Checkbox("Cull Face", &activateCullFace);
+        ImGui::Checkbox("Lightning", &activateLighting);
+        ImGui::Checkbox("Color Material", &activateColorMaterial);
+
+        ImGui::Text("\n");
+
+        ImGui::Text("Input:");
+        ImGui::Checkbox("Drag&Drop", &activateDragAndDrop);
     }
 
     ImGui::End();

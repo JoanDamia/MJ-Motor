@@ -198,8 +198,6 @@ update_status ModuleRenderer3D::Update(float dt) {
 
 	FBXLoader::RenderAll();
 
-	//glPushMatrix();
-
 	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)
 	{
@@ -219,7 +217,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	}
 
 	//Show VSYNC with CheckBox
-	if (App->editor->showVSYNC)
+	if (App->editor->activateVSYNC)
 	{
 		SDL_GL_SetSwapInterval(1);
 	}
@@ -229,7 +227,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	}
 
 	//Show Depth Test with CheckBox
-	if (App->editor->showDepthTest)
+	if (App->editor->activateDepthTest)
 	{
 		glDisable(GL_DEPTH_TEST);
 	}
@@ -239,17 +237,17 @@ update_status ModuleRenderer3D::Update(float dt) {
 	}
 
 	//Show Cull Face with CheckBox
-	if (App->editor->showCullFace)
-	{
-		glDisable(GL_CULL_FACE);
-	}
-	else
+	if (App->editor->activateCullFace)
 	{
 		glEnable(GL_CULL_FACE);
 	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
 
 	//Show Lighting with CheckBox
-	if (App->editor->showLighting)
+	if (App->editor->activateLighting)
 	{
 		glDisable(GL_LIGHTING);
 	}
@@ -259,13 +257,13 @@ update_status ModuleRenderer3D::Update(float dt) {
 	}
 
 	//Show Color Material with CheckBox
-	if (App->editor->showLighting)
+	if (App->editor->activateLighting)
 	{
-		glDisable(GL_COLOR_MATERIAL);
+		glEnable(GL_COLOR_MATERIAL);
 	}
 	else
 	{
-		glEnable(GL_COLOR_MATERIAL);
+		glDisable(GL_COLOR_MATERIAL);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -358,10 +356,7 @@ void ModuleRenderer3D::RenderCubeBuffer()
 	// enable vertex arrays
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-	if (App->editor->showCubeBufferColors)
-	{
-		glEnableClientState(GL_COLOR_ARRAY);
-	}
+	glEnableClientState(GL_COLOR_ARRAY);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
