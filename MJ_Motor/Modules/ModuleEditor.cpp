@@ -240,22 +240,13 @@ void ModuleEditor::ImGuiInspectorWindow()
 {
     ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::Text("MJ - Ventana 1");               // Display some text (you can use a format strings too)
+    ImGui::Text("Prefab");
 
     //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
-    ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
+    //ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
 
     ImGui::Checkbox("Checkers Cube", &showCubeCheckers);
-
-    if (ImGui::CollapsingHeader("FPS"))
-    {
-        char title[25];
-        sprintf_s(title, 25, "Framerate %1.1f", fps_log[fps_log.size() - 1]);
-        ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-        sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
-        ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
-    }
 
     if (ImGui::CollapsingHeader("Modules", NULL, ImGuiTreeNodeFlags_DefaultOpen))
     {
@@ -270,6 +261,38 @@ void ModuleEditor::ImGuiInspectorWindow()
 
         ImGui::Text("Input:");
         ImGui::Checkbox("Drag&Drop", &activateDragAndDrop);
+
+        ImGui::Text("\n");
+    }
+
+    if (ImGui::CollapsingHeader("Information"))
+    {
+        //Software versions
+        ImGui::Text("Software Versions");
+        ImGui::Text("SDL: 2.0");
+        ImGui::Text("OpenGL: 3.1.0");
+        ImGui::Text("Glew: 2.1.0");
+        ImGui::Text("ImGui: 1.89.9");
+        ImGui::Text("Assimp: 5.3.1");
+        ImGui::Text("DevIl: 7.0");
+        ImGui::Text("MathGeoLib: 2.0");
+
+        ImGui::Text("\n");
+
+        //Hardware Detection
+        ImGui::Text("System");
+        ImGui::Text("CPU cores:%d", SDL_GetCPUCount());
+        ImGui::Text("RAM:%dGB", (SDL_GetSystemRAM()) / 1000);
+
+        ImGui::Text("\n");
+
+        //FPS Graph
+        ImGui::Text("FPS Graph");
+        char title[25];
+        sprintf_s(title, 25, "Framerate %1.1f", fps_log[fps_log.size() - 1]);
+        ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(210, 70));
+        sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
+        ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(210, 70));
     }
 
     ImGui::End();
