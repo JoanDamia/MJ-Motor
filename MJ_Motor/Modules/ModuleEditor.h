@@ -127,6 +127,12 @@ public:
 	//Input booleans
 	bool activateDragAndDrop = true;
 
+	//Basic Shapes file paths
+	const char* cube_file_path = "Assets/BasicShapes/cube.fbx";
+	const char* sphere_file_path = "Assets/BasicShapes/sphere.fbx";
+	const char* cone_file_path = "Assets/BasicShapes/cone.fbx";
+	const char* cylinder_file_path = "Assets/BasicShapes/cylinder.fbx";
+
 	//Console struct
 	Console console_log;
 

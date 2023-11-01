@@ -154,12 +154,12 @@ bool ModuleRenderer3D::Init()
 	GenerateFrameBuffer();
 
 	//Render Mesh with File path
-	FBXLoader::FileLoader(file_path, &myMesh);
+	FBXLoader::FileLoader(file_path);
 
 	//Render Mesh with File drop
 	if (App->input->fileDrop == true)
 	{
-		FBXLoader::FileLoader(App->input->droppedDir, &myMesh);
+		FBXLoader::FileLoader(App->input->droppedDir);
 	}
 
 	//==============================================================================================================================================================

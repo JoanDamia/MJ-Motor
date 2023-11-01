@@ -3,6 +3,8 @@
 #include "ModuleEditor.h"
 #include <SDL/include/SDL_opengl.h>
 
+#include "ModuleRenderer3D.h"
+
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
@@ -96,10 +98,46 @@ update_status ModuleEditor::PostUpdate(float dt)
             // File menu
             if (ImGui::BeginMenu("File"))
             {
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Clear Meshes"))
+                FBXLoader::meshesVector.clear();
+
+                ImGui::Text("\n");
+
+                ImGui::EndMenu();
+            }
+
+            // Window menu
+            if (ImGui::BeginMenu("Window"))
+            {
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Scene"))
+                    showScene = !showScene;
+
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Inspector"))
+                    showInspector = !showInspector;;
+
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Console"))
+                    showConsole = !showConsole;;
+
+                ImGui::Text("\n");
+
+                ImGui::EndMenu();
+            }
+
+            // About menu
+            if (ImGui::BeginMenu("About"))
+            {
                 if (ImGui::MenuItem("Gui Demo"))
 
-                if (ImGui::MenuItem("Documentation"))
-                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
+               if (ImGui::MenuItem("Documentation"))
+                        ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
 
                 if (ImGui::MenuItem("Download latest"))
                     ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/releases", NULL, NULL, SW_SHOWDEFAULT);
@@ -113,41 +151,15 @@ update_status ModuleEditor::PostUpdate(float dt)
                 ImGui::EndMenu();
             }
 
-            // Window menu
-            if (ImGui::BeginMenu("Window"))
-            {
-                if (ImGui::MenuItem("Scene"))
-                    showScene = !showScene;
-
-                if (ImGui::MenuItem("Inspector"))
-                    showInspector = !showInspector;;
-
-                if (ImGui::MenuItem("Console"))
-                    showConsole = !showConsole;;
-
-                ImGui::EndMenu();
-            }
-
-            // About menu
-            if (ImGui::BeginMenu("About"))
-            {
-                if (ImGui::MenuItem("Options"))
-
-                if (ImGui::MenuItem("Vsync"));
-
-                if (ImGui::MenuItem("Input"));
-
-                if (ImGui::MenuItem("Audio"));
-
-
-                ImGui::EndMenu();
-            }
-
             // Exit menu
             if (ImGui::BeginMenu("Exit"))
             {
-                if (ImGui::MenuItem("Close Motor"))
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Close Motor"))
                     return UPDATE_STOP;
+
+                ImGui::Text("\n");
 
                 ImGui::EndMenu();
             }
@@ -240,13 +252,32 @@ void ModuleEditor::ImGuiInspectorWindow()
 {
     ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::Text("Prefab");
-
     //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
     //ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
 
+    ImGui::Text("Basic Shapes");
+
+    if (ImGui::Button("Cube"))
+    {
+        FBXLoader::FileLoader(cube_file_path);
+    }
+    if (ImGui::Button("Sphere"))
+    {
+        FBXLoader::FileLoader(sphere_file_path);
+    }
+    if (ImGui::Button("Cone"))
+    {
+        FBXLoader::FileLoader(cone_file_path);
+    }
+    if (ImGui::Button("Cylinder"))
+    {
+        FBXLoader::FileLoader(cylinder_file_path);
+    }
+
     ImGui::Checkbox("Checkers Cube", &showCubeCheckers);
+
+    ImGui::Text("\n");
 
     if (ImGui::CollapsingHeader("Modules", NULL, ImGuiTreeNodeFlags_DefaultOpen))
     {

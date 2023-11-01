@@ -17,7 +17,7 @@ void FBXLoader::Debug()
 	aiAttachLogStream(&stream);
 }
 
-void FBXLoader::FileLoader(const char* file_path, MeshStorer* ourMesh)
+void FBXLoader::FileLoader(const char* file_path)
 {
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene -> HasMeshes())

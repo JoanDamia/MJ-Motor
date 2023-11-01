@@ -124,7 +124,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					droppedDir = e.drop.file;
 					LOG("File Dropped");
 					App->editor->console_log.AddLog(__FILE__, __LINE__, "File Dropped");
-					FBXLoader::FileLoader(droppedDir, &App->renderer3D->myMesh);
+					FBXLoader::FileLoader(droppedDir);
 					fileDrop = true;
 					SDL_free(droppedDir);
 				}

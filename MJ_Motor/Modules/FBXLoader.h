@@ -39,7 +39,7 @@ public:
 
 	//Methods
 	void Debug();
-	static void FileLoader(const char* file_path, MeshStorer* ourMesh);
+	static void FileLoader(const char* file_path);
 	static void RenderAll();
 	static void CleanUp();
 

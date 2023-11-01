@@ -72,7 +72,6 @@ public:
     uint rboDepthStencil;
 
     const char* file_path = "Assets/BakerHouse/BakerHouse.fbx";
-    MeshStorer myMesh;
 
     //Chekers Texture
     GLubyte imageData[IMAGE_ROWS][IMAGE_COLS][3]; // Texture image data
