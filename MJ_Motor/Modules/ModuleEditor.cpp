@@ -134,20 +134,7 @@ update_status ModuleEditor::PostUpdate(float dt)
             // About menu
             if (ImGui::BeginMenu("About"))
             {
-                if (ImGui::MenuItem("Gui Demo"))
-
-               if (ImGui::MenuItem("Documentation"))
-                        ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/wiki", NULL, NULL, SW_SHOWDEFAULT);
-
-                if (ImGui::MenuItem("Download latest"))
-                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/releases", NULL, NULL, SW_SHOWDEFAULT);
-
-                if (ImGui::MenuItem("Report a bug"))
-                    ShellExecuteA(NULL, "open", "https://github.com/d0n3val/Edu-Game-Engine/issues", NULL, NULL, SW_SHOWDEFAULT);
-
-                if (ImGui::MenuItem("About"))
-                    ShellExecuteA(NULL, "open", "https://learnopengl.com/", NULL, NULL, SW_SHOWDEFAULT);
-
+                showAbout = true;
                 ImGui::EndMenu();
             }
 
@@ -165,6 +152,33 @@ update_status ModuleEditor::PostUpdate(float dt)
             }
 
             ImGui::EndMenuBar();
+        }
+
+        if (showAbout)
+        {
+            ImGui::Begin("About", &showAbout, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu("Menu"))
+                {
+                    if (ImGui::MenuItem("Settings"))
+                    {
+
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenuBar();
+            }
+            ImGui::Text("MJ Engine from Miguel Rodríguez and Joan Damià\n\n");
+            ImGui::SameLine();
+            if (ImGui::Button("Our GitHub")) {
+
+                ::ShellExecuteA(NULL, "open", "https://github.com/JoanDamia/MJ-Motor", NULL, NULL, SW_SHOWDEFAULT);
+            }
+            ImGui::Text("\n\n");
+            ImGui::Text("Engine made by two CITM students, capable of multible features like fbx rendering, drag and drop, camera movement and much more to come");
+
+            ImGui::End();
         }
 
         ImGui::PopStyleVar(3);

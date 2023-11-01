@@ -112,6 +112,7 @@ public:
 	bool showScene = true;
 	bool showInspector = true;
 	bool showConsole = true;
+	bool showAbout = false;
 
 	//Inspector booleans
 	bool showCubeDirectMode = false;
