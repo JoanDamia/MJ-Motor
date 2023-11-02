@@ -26,6 +26,9 @@ struct MeshStorer
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
 	float* vertex = nullptr;
+	GLuint id_texture;
+
+	const char* bakerHouseTexPath = "Assets/BakerHouse/BakerHouse.png";
 
 	//Methods
 	void RenderOneMesh();

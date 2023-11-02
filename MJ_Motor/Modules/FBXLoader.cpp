@@ -5,6 +5,7 @@
 
 #include "FBXLoader.h"
 #include "Application.h"
+#include "TexLoader.h"
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
 
@@ -53,6 +54,8 @@ void FBXLoader::FileLoader(const char* file_path)
 
 					}
 				}
+				ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);
+
 				//Generate Buffer
 				MeshStorer::GenerateMeshBuffer(ourMesh);
 
@@ -82,35 +85,30 @@ void FBXLoader::RenderAll()
 
 void MeshStorer::RenderOneMesh()
 {
-	/*
-	glBegin(GL_TRIANGLES);
-
-	
-	for (int i = 0; i < num_index; i++)
-	{
-		glVertex3f(vertex[index[i] * 3], vertex[index[i] * 3 + 1], vertex[index[i] * 3 + 2]);
-	}
-
-	glEnd();
-	*/
-
-
-	// enable vertex arrays
+	//Enable vertex arrays
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
+
+	glBindTexture(GL_TEXTURE_2D, id_texture);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
-
-	// before draw, specify vertex and index arrays with their offsets
+	//Before draw, specify vertex and index arrays with their offsets
 	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(float) * 1, (void*)(3 * sizeof(float)));
+	glNormalPointer(GL_FLOAT, sizeof(float) * 1, NULL);
 
 	glDrawElements(GL_TRIANGLES,            // primitive type
 		num_index,                      // # of indices
 		GL_UNSIGNED_INT,         // data type
 		(void*)0);               // ptr to indices
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
-	
+	glDisable(GL_TEXTURE_COORD_ARRAY);
+	glDisable(GL_NORMAL_ARRAY);
 }
 
 
