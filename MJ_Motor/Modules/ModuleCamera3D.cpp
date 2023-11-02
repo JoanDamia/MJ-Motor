@@ -9,7 +9,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Y = float3(0.0f, 1.0f, 0.0f);
 	Z = float3(0.0f, 0.0f, 1.0f);
 
-	Position = float3(0.0f, 10.0f, 5.0f);
+	Position = float3(7.0f, 5.0f, 7.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	ViewMatrix = IdentityMatrix;
 
@@ -53,6 +53,25 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		LookAt(float3(0, 0, 0));
+	}
+
+	//Set camera in First Person
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		firstPersonView = !firstPersonView;
+
+		if (firstPersonView)
+		{
+			LOG("First Person ON");
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "First Person ON");
+			Reference = Position - (Position * 0.01);
+		}
+		else
+		{
+			LOG("First Person OFF");
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "First Person OFF");
+			Reference = float3(0.0f, 0.0f, 0.0f);
+		}
 	}
 
 	//if(App->input->GetMouseButton(SDL_MOUSEWHEEL) == KEY_REPEAT) newPos.z += speed;
@@ -150,7 +169,6 @@ void ModuleCamera3D::LookAt( const float3&Spot)
 
 	CalculateViewMatrix();
 }
-
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const float3&Movement)

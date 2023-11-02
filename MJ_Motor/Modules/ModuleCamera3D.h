@@ -20,6 +20,8 @@ public:
 	void Move(const float3&Movement);
 	float* GetViewMatrix();
 
+	bool firstPersonView = false;
+
 private:
 
 	void CalculateViewMatrix();
