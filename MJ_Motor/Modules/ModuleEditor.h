@@ -108,6 +108,7 @@ public:
 	void ImGuiRenderWindow();
 	void ImGuiInspectorWindow();
 	void ImGuiCreditsWindow();
+	void ImGuiLicenseWindow();
 
 	//ImGui Tool Bar Window Booleans
 	bool showScene = true;
@@ -135,8 +136,9 @@ public:
 	const char* cone_file_path = "Assets/BasicShapes/cone.fbx";
 	const char* cylinder_file_path = "Assets/BasicShapes/cylinder.fbx";
 
-	//Credits booleans
+	//About booleans
 	bool showCredits = false;
+	bool showLicense = false;
 
 	//Console struct
 	Console console_log;

@@ -147,6 +147,11 @@ update_status ModuleEditor::PostUpdate(float dt)
 
                 ImGui::Text("\n");
 
+                if (ImGui::MenuItem(" License"))
+                    showLicense = !showLicense;
+
+                ImGui::Text("\n");
+
                 ImGui::EndMenu();
             }
 
@@ -197,6 +202,12 @@ update_status ModuleEditor::PostUpdate(float dt)
         if (showCredits)
         {
             ImGuiCreditsWindow();
+        }
+
+        //Imgui License Window
+        if (showLicense)
+        {
+            ImGuiLicenseWindow();
         }
     }
 
@@ -338,16 +349,65 @@ void ModuleEditor::ImGuiCreditsWindow()
 
     ImGui::Text("\n");
 
-    ImGui::Text("   MJ ENGINE");
+    ImGui::Text(" MJ ENGINE");
     ImGui::Text("\n");
-    ImGui::TextDisabled("   By Miguel Rodriguez and Joan Damia\n\n");
+    ImGui::TextDisabled(" By Miguel Rodriguez and Joan Damia\n\n");
+
+    ImGui::Text(" Engine made by two CITM students, capable of multible features like \n");
+    ImGui::Text(" fbx rendering, drag and drop, camera movement and much more to come.\n\n");
 
     ImGui::Text("\n\n");
 
-    ImGui::Text("   Engine made by two CITM students, capable of multible features like \n");
-    ImGui::Text("   fbx rendering, dragand drop, camera movement and much more to come.\n\n");
-    ImGui::Text("   WASD Movement while right clicking\n   SPACE for first person view\n   alt+left click for mouse based looking\n\n");
+    ImGui::Text(" Features: \n\n");
+
+    ImGui::BulletText(" Fbx loader (Baker_house loaded at the start)\n");
+    ImGui::BulletText(" Fbx Drag and Drop\n");
+    ImGui::BulletText(" Texture loader\n");
+    ImGui::BulletText(" ImGui menus and console Window\n");
+    ImGui::BulletText(" Unity-like camera\n");
+
+    ImGui::Text("\n\n");
+
+    ImGui::Text(" Controls: \n\n");
+
+    ImGui::BulletText(" Camera WASD movement while pressing right click\n");
+    ImGui::BulletText(" Alt + Left Click for mouse based view\n");
+    ImGui::BulletText(" SPACE for first person view\n");
+    ImGui::BulletText(" Alt + MouseWheel for zoom\n");
   
+    ImGui::Text("\n");
+
+    ImGui::End();
+}
+
+// -----------------------------------------------------------------        
+void ModuleEditor::ImGuiLicenseWindow()
+{
+    ImGui::Begin("License", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::Text("\n");
+
+    ImGui::Text(" MIT License");
+    ImGui::Text("\n");
+    ImGui::Text(" Copyright (c) 2023 Miguel Rodriguez and Joan Damia\n\n");
+
+    ImGui::Text(" Permission is hereby granted, free of charge, to any person obtaining a copy\n");
+    ImGui::Text(" of this software and associated documentation files (the 'Software'), to deal\n");
+    ImGui::Text(" in the Software without restriction, including without limitation the rights\n");
+    ImGui::Text(" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n");
+    ImGui::Text(" copies of the Software, and to permit persons to whom the Software is\n");
+    ImGui::Text(" furnished to do so, subject to the following conditions:\n\n");
+
+    ImGui::Text(" The above copyright notice and this permission notice shall be included in all\n");
+    ImGui::Text(" copies or substantial portions of the Software.\n\n");
+
+    ImGui::Text(" THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n");
+    ImGui::Text(" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n");
+    ImGui::Text(" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n");
+    ImGui::Text(" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n");
+    ImGui::Text(" LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n");
+    ImGui::Text(" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n");
+    ImGui::Text(" SOFTWARE.\n");
 
     ImGui::Text("\n");
 
