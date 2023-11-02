@@ -344,7 +344,10 @@ void ModuleEditor::ImGuiCreditsWindow()
 
     ImGui::Text("\n\n");
 
-    ImGui::Text("   Engine made by two CITM students, capable of multible features like fbx rendering, drag and drop, camera movement and much more to come");
+    ImGui::Text("   Engine made by two CITM students, capable of multible features like \n");
+    ImGui::Text("   fbx rendering, dragand drop, camera movement and much more to come.\n\n");
+    ImGui::Text("   WASD Movement while right clicking\n   SPACE for first person view\n   alt+left click for mouse based looking\n\n");
+  
 
     ImGui::Text("\n");
 
