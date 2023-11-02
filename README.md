@@ -10,7 +10,9 @@ Joan Damià. GitHub: (https://github.com/JoanDamia)
 ## Features and controls
 
 - Fbx Drag and Drop features
-- Fbx loader (Baker_house loaded from running the engine). Buffer based geometry creation
+- Fbx loader (Baker_house loaded from running the engine).
+- Texture loader
+- Console Window
 - Fullscreen
 - Fps graph
 - Imgui functional menus
@@ -19,6 +21,8 @@ Joan Damià. GitHub: (https://github.com/JoanDamia)
 - Unity controls for camera:
 - Camera WASD movement while pressing right click
 - Alt + Left Click for mouse based view
+- SPACE for first person view
+- Alt+MouseWheel for zoom
 
 
 
