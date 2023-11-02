@@ -9,7 +9,6 @@
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
 
-
 void FBXLoader::Debug()
 {
 	// Stream log messages to Debug window
@@ -29,11 +28,22 @@ void FBXLoader::FileLoader(const char* file_path)
 
 			// Copy vertices
 			ourMesh->num_vertex = scene->mMeshes[i]->mNumVertices;
-			ourMesh->vertex = new float[ourMesh->num_vertex * 3];
-			memcpy(ourMesh->vertex, scene->mMeshes[i]->mVertices, sizeof(float) * ourMesh->num_vertex * 3);
+			ourMesh->vertex = new float[ourMesh->num_vertex * VERTEX_FEATURES];
 			LOG("New mesh with %d vertex", ourMesh->num_vertex);
-			//App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d vertex", ourMesh->num_vertex);
+					
+			for (int v = 0; v < ourMesh->num_vertex; v++) {
 
+				ourMesh->vertex[v * VERTEX_FEATURES] = scene->mMeshes[i]->mVertices[v].x;
+				ourMesh->vertex[v * VERTEX_FEATURES + 1] = scene->mMeshes[i]->mVertices[v].y;
+				ourMesh->vertex[v * VERTEX_FEATURES + 2] = scene->mMeshes[i]->mVertices[v].z;
+			
+				if (scene->mMeshes[i]->HasTextureCoords(0))
+				{
+					ourMesh->vertex[v * VERTEX_FEATURES + 3] = scene->mMeshes[i]->mTextureCoords[0][v].x;
+					ourMesh->vertex[v * VERTEX_FEATURES + 4] = scene->mMeshes[i]->mTextureCoords[0][v].y;
+				}
+			}
+		
 			// Copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
@@ -44,24 +54,24 @@ void FBXLoader::FileLoader(const char* file_path)
 					if (scene->mMeshes[i]->mFaces[j].mNumIndices != 3) 
 					{
 						LOG("WARNING, geometry face with != 3 indices!");
-						//App->editor->console_log.AddLog(__FILE__, __LINE__, "WARNING, geometry face with != 3 indices!");
 					}
 					else
 					{
 						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
 						LOG("New mesh with %d index", ourMesh->num_index);
-						//App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
 
 					}
 				}
-				ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);
-
-				//Generate Buffer
-				MeshStorer::GenerateMeshBuffer(ourMesh);
-
-				//Store Mesh
-				meshesVector.push_back(ourMesh);
 			}
+
+			//Load Texture
+			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);
+
+			//Generate Buffer
+			FBXLoader::GenerateMeshBuffer(ourMesh);
+
+			//Store Mesh
+			meshesVector.push_back(ourMesh);
 
 		}
 
@@ -72,7 +82,6 @@ void FBXLoader::FileLoader(const char* file_path)
 	}
 	else
 		LOG("Error loading scene % s", file_path);
-		//App->editor->console_log.AddLog(__FILE__, __LINE__, "Error loading scene % s", file_path);
 }
 
 void FBXLoader::RenderAll() 
@@ -93,26 +102,24 @@ void MeshStorer::RenderOneMesh()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
 
 	//Before draw, specify vertex and index arrays with their offsets
-	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glTexCoordPointer(2, GL_FLOAT, sizeof(float) * 1, (void*)(3 * sizeof(float)));
-	glNormalPointer(GL_FLOAT, sizeof(float) * 1, NULL);
+	glVertexPointer(3, GL_FLOAT, sizeof(float) * VERTEX_FEATURES, NULL);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(float) * VERTEX_FEATURES, (void*)(3 * sizeof(float)));
+	glNormalPointer(GL_FLOAT, sizeof(float) * VERTEX_FEATURES, NULL);
 
 	glDrawElements(GL_TRIANGLES,            // primitive type
 		num_index,                      // # of indices
 		GL_UNSIGNED_INT,         // data type
-		(void*)0);               // ptr to indices
+		(void*)0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
 	glDisable(GL_TEXTURE_COORD_ARRAY);
-	glDisable(GL_NORMAL_ARRAY);
 }
 
 
-void MeshStorer::GenerateMeshBuffer(MeshStorer* ourMesh)
+void FBXLoader::GenerateMeshBuffer(MeshStorer* ourMesh)
 {
 	//Mesh Buffer
 	//Mesh Buffer Generator
@@ -122,13 +129,12 @@ void MeshStorer::GenerateMeshBuffer(MeshStorer* ourMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ourMesh->id_index);
 
 	//Mesh Buffer Data
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ourMesh->num_vertex * 3, ourMesh->vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ourMesh->num_vertex * VERTEX_FEATURES, ourMesh->vertex, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ourMesh->num_index, ourMesh->index, GL_STATIC_DRAW);
 
 	//Close Mesh Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 
@@ -138,5 +144,4 @@ void FBXLoader::CleanUp()
 	aiDetachAllLogStreams();
 
 	meshesVector.clear();
-	
 }

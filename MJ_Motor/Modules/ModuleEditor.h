@@ -121,10 +121,10 @@ public:
 
 	//Renderer booleans
 	bool activateVSYNC = true;
-	bool activateDepthTest = true;
+	bool activateDepthTest = false;
 	bool activateCullFace = true;
 	bool activateLighting = false;
-	bool activateColorMaterial = false;
+	bool activateColorMaterial = true;
 
 	//Input booleans
 	bool activateDragAndDrop = true;

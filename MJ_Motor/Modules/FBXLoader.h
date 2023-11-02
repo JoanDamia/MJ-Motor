@@ -8,6 +8,9 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+//It has 5 vertex features for x,y,z,u,v
+#define VERTEX_FEATURES 5
+
 using namespace std;
 
 struct MeshStorer
@@ -28,11 +31,10 @@ struct MeshStorer
 	float* vertex = nullptr;
 	GLuint id_texture;
 
-	const char* bakerHouseTexPath = "Assets/BakerHouse/BakerHouse.png";
+	const char* bakerHouseTexPath = "Assets/BakerHouse/Baker_house.png";
 
 	//Methods
 	void RenderOneMesh();
-	static void GenerateMeshBuffer(MeshStorer* ourMesh);
 
 };
 
@@ -45,6 +47,8 @@ public:
 	static void FileLoader(const char* file_path);
 	static void RenderAll();
 	static void CleanUp();
+
+	static void GenerateMeshBuffer(MeshStorer* ourMesh);
 
 	static vector <MeshStorer*> meshesVector;
 };

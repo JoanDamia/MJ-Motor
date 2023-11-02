@@ -257,7 +257,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	}
 
 	//Show Color Material with CheckBox
-	if (App->editor->activateLighting)
+	if (App->editor->activateColorMaterial)
 	{
 		glEnable(GL_COLOR_MATERIAL);
 	}

@@ -15,37 +15,18 @@ GLuint TexLoader::LoadTexture(char const* thefilename)
 	iluInit();
 	ilutInit();
 
-	ILuint tex_Lenna;
-	ilGenImages(1, &tex_Lenna);
-	ilBindImage(tex_Lenna);
+	ILuint tex_id;
+	ilGenImages(1, &tex_id);
+	ilBindImage(tex_id);
 
 	//Load an image
 	ilLoadImage(thefilename);
 
-	tex_Lenna = ilutGLBindTexImage();
+	tex_id = ilutGLBindTexImage();
 
 	// Clean Image
 	ilBindImage(0);
-	ilDeleteImages(1, &tex_Lenna);
+	ilDeleteImages(1, &tex_id);
 
-	return tex_Lenna;
-
-	/*
-	int const width = ilGetInteger(IL_IMAGE_WIDTH);
-	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
-	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
-	int const format = ilGetInteger(IL_IMAGE_FORMAT); // matches OpenGL
-
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_FALSE);
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0); // rows are tightly packed
-	glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-	glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // pixels are tightly packed
-
-	glTexImage2D(GL_TEXTURE_2D, 0, 1, 10, 10, 0, 1, 1, 0);
-	*/
+	return tex_id;
 }
