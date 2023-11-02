@@ -18,7 +18,9 @@ Joan Damià. GitHub: (https://github.com/JoanDamia)
 - Imgui functional menus
 - Functional escape button and the cross button for the enclosure of the engine
 
-- Unity controls for camera:
+
+
+Unity controls for camera:
 - Camera WASD movement while pressing right click
 - Alt + Left Click for mouse based view
 - SPACE for first person view
