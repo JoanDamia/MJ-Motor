@@ -1,6 +1,8 @@
 # MJ-Motor
 3D motor made by:
 
+Project GitHub page: (https://github.com/JoanDamia/MJ-Motor)
+
 Miguel Rodríguez. GitHub: (https://github.com/Bankaster)
 
 Joan Damià. GitHub: (https://github.com/JoanDamia)
