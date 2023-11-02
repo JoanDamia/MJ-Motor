@@ -119,12 +119,12 @@ update_status ModuleEditor::PostUpdate(float dt)
                 ImGui::Text("\n");
 
                 if (ImGui::MenuItem(" Inspector"))
-                    showInspector = !showInspector;;
+                    showInspector = !showInspector;
 
                 ImGui::Text("\n");
 
                 if (ImGui::MenuItem(" Console"))
-                    showConsole = !showConsole;;
+                    showConsole = !showConsole;
 
                 ImGui::Text("\n");
 
@@ -134,7 +134,19 @@ update_status ModuleEditor::PostUpdate(float dt)
             // About menu
             if (ImGui::BeginMenu("About"))
             {
-                showAbout = true;
+                ImGui::Text("\n");
+
+                if (ImGui::Button("Our GitHub")) {
+                    ::ShellExecuteA(NULL, "open", "https://github.com/JoanDamia/MJ-Motor", NULL, NULL, SW_SHOWDEFAULT);
+                }
+
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Credits"))
+                    showCredits = !showCredits;
+
+                ImGui::Text("\n");
+
                 ImGui::EndMenu();
             }
 
@@ -154,33 +166,6 @@ update_status ModuleEditor::PostUpdate(float dt)
             ImGui::EndMenuBar();
         }
 
-        if (showAbout)
-        {
-            ImGui::Begin("About", &showAbout, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
-            if (ImGui::BeginMenuBar())
-            {
-                if (ImGui::BeginMenu("Menu"))
-                {
-                    if (ImGui::MenuItem("Settings"))
-                    {
-
-                    }
-                    ImGui::EndMenu();
-                }
-                ImGui::EndMenuBar();
-            }
-            ImGui::Text("MJ Engine from Miguel Rodríguez and Joan Damià\n\n");
-            ImGui::SameLine();
-            if (ImGui::Button("Our GitHub")) {
-
-                ::ShellExecuteA(NULL, "open", "https://github.com/JoanDamia/MJ-Motor", NULL, NULL, SW_SHOWDEFAULT);
-            }
-            ImGui::Text("\n\n");
-            ImGui::Text("Engine made by two CITM students, capable of multible features like fbx rendering, drag and drop, camera movement and much more to come");
-
-            ImGui::End();
-        }
-
         ImGui::PopStyleVar(3);
 
         ImGuiID dockSpaceId = ImGui::GetID("BackGroundWindowDockSpace");
@@ -193,7 +178,7 @@ update_status ModuleEditor::PostUpdate(float dt)
         //ImGui Render Window
         if (showScene)
         {
-            ImguiRenderWindow();
+            ImGuiRenderWindow();
         }
        
         //ImGui Inspector Window
@@ -208,8 +193,11 @@ update_status ModuleEditor::PostUpdate(float dt)
             console_log.Draw("Console");
         }
 
-        //==============================================================================================================================================================
-
+        //Imgui Credits Window
+        if (showCredits)
+        {
+            ImGuiCreditsWindow();
+        }
     }
 
     // 3. Show another simple window.
@@ -251,7 +239,7 @@ void ModuleEditor::PushLog(std::vector<float>* Log, float toPush)
 
 //ImGui Windows
 // -----------------------------------------------------------------        
-void ModuleEditor::ImguiRenderWindow() 
+void ModuleEditor::ImGuiRenderWindow() 
 {
     ImGui::Begin("Scene", NULL, ImGuiWindowFlags_NoBringToFrontOnFocus);
     //ImVec2 wsize = ImGui::GetWindowSize();
@@ -339,6 +327,26 @@ void ModuleEditor::ImGuiInspectorWindow()
         sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
         ImGui::PlotHistogram("##millisconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(210, 70));
     }
+
+    ImGui::End();
+}
+
+// -----------------------------------------------------------------        
+void ModuleEditor::ImGuiCreditsWindow()
+{
+    ImGui::Begin("Credits", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::Text("\n");
+
+    ImGui::Text("   MJ ENGINE");
+    ImGui::Text("\n");
+    ImGui::TextDisabled("   By Miguel Rodriguez and Joan Damia\n\n");
+
+    ImGui::Text("\n\n");
+
+    ImGui::Text("   Engine made by two CITM students, capable of multible features like fbx rendering, drag and drop, camera movement and much more to come");
+
+    ImGui::Text("\n");
 
     ImGui::End();
 }
