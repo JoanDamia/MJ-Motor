@@ -16,6 +16,9 @@
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 
 #include "ModuleEditor.h";
+#include <DevIL/include/ilut.h>
+#include <DevIL/include/ilu.h>
+#include <DevIL/include/il.h>
 
 
 //===================================================
@@ -147,6 +150,19 @@ bool ModuleRenderer3D::Init()
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, context);
 	ImGui_ImplOpenGL3_Init("#version 130");
+
+	//DevIL Initialization
+	LOG("Initialaizing il");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Initialaizing il");
+	ilInit();
+
+	LOG("Initialaizing ilu");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Initialaizing ilu");
+	iluInit();
+
+	LOG("Initialaizing ilut");
+	App->editor->console_log.AddLog(__FILE__, __LINE__, "Initialaizing ilut");
+	ilutInit();
 
 	//==============================================================================================================================================================
 

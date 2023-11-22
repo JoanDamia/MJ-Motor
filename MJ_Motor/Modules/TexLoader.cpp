@@ -9,17 +9,8 @@
 
 #include "TexLoader.h"
 
-//Memory Leak Solution
-int memLeak = 0;
-
 GLuint TexLoader::LoadTexture(char const* thefilename)
 {
-	if (memLeak<2)
-	{
-		ilInit();
-		iluInit();
-		ilutInit();
-
 		ILuint tex_id;
 		ilGenImages(1, &tex_id);
 		ilBindImage(tex_id);
@@ -33,8 +24,5 @@ GLuint TexLoader::LoadTexture(char const* thefilename)
 		ilBindImage(0);
 		ilDeleteImages(1, &tex_id);
 
-		memLeak++;
-
 		return tex_id;
-	}
 }
