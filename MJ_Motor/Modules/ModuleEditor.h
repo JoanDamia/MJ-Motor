@@ -109,12 +109,14 @@ public:
 	void ImGuiInspectorWindow();
 	void ImGuiCreditsWindow();
 	void ImGuiLicenseWindow();
+	void ImGuiHierarchyWindow();
 
 	//ImGui Tool Bar Window Booleans
 	bool showScene = true;
 	bool showInspector = true;
 	bool showConsole = true;
 	bool showAbout = false;
+	bool showHierarchy = true;
 
 	//Inspector booleans
 	bool showCubeDirectMode = false;

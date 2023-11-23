@@ -128,6 +128,11 @@ update_status ModuleEditor::PostUpdate(float dt)
 
                 ImGui::Text("\n");
 
+                if (ImGui::MenuItem(" Hierarchy"))
+                    showHierarchy = !showHierarchy;
+
+                ImGui::Text("\n");
+
                 ImGui::EndMenu();
             }
 
@@ -208,6 +213,12 @@ update_status ModuleEditor::PostUpdate(float dt)
         if (showLicense)
         {
             ImGuiLicenseWindow();
+        }
+
+        //Imgui Hierarchy Window
+        if (showHierarchy)
+        {
+            ImGuiHierarchyWindow();
         }
     }
 
@@ -410,6 +421,16 @@ void ModuleEditor::ImGuiLicenseWindow()
     ImGui::Text(" SOFTWARE.\n");
 
     ImGui::Text("\n");
+
+    ImGui::End();
+}
+
+// -----------------------------------------------------------------        
+void ModuleEditor::ImGuiHierarchyWindow()
+{
+    ImGui::Begin("Hierarchy", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::Text("Game Objects");
 
     ImGui::End();
 }
