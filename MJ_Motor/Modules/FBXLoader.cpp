@@ -22,42 +22,44 @@ void FBXLoader::FileLoader(const char* file_path)
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene -> HasMeshes())
 	{
-		for (int i = 0; i < scene->mNumMeshes; i++)
+		for (int i = 0; i < scene->mRootNode->mNumChildren; i++)
 		{
 			MeshStorer* ourMesh = new MeshStorer();
 
+			aiMesh* ai_mesh = scene->mMeshes[scene->mRootNode->mChildren[i]->mMeshes[0]];
+
 			// Copy vertices
-			ourMesh->num_vertex = scene->mMeshes[i]->mNumVertices;
+			ourMesh->num_vertex = ai_mesh->mNumVertices;
 			ourMesh->vertex = new float[ourMesh->num_vertex * VERTEX_FEATURES];
 			LOG("New mesh with %d vertex", ourMesh->num_vertex);
 					
 			for (int v = 0; v < ourMesh->num_vertex; v++) {
 
-				ourMesh->vertex[v * VERTEX_FEATURES] = scene->mMeshes[i]->mVertices[v].x;
-				ourMesh->vertex[v * VERTEX_FEATURES + 1] = scene->mMeshes[i]->mVertices[v].y;
-				ourMesh->vertex[v * VERTEX_FEATURES + 2] = scene->mMeshes[i]->mVertices[v].z;
+				ourMesh->vertex[v * VERTEX_FEATURES] = ai_mesh->mVertices[v].x;
+				ourMesh->vertex[v * VERTEX_FEATURES + 1] = ai_mesh->mVertices[v].y;
+				ourMesh->vertex[v * VERTEX_FEATURES + 2] = ai_mesh->mVertices[v].z;
 			
-				if (scene->mMeshes[i]->HasTextureCoords(0))
+				if (ai_mesh->HasTextureCoords(0))
 				{
-					ourMesh->vertex[v * VERTEX_FEATURES + 3] = scene->mMeshes[i]->mTextureCoords[0][v].x;
-					ourMesh->vertex[v * VERTEX_FEATURES + 4] = scene->mMeshes[i]->mTextureCoords[0][v].y;
+					ourMesh->vertex[v * VERTEX_FEATURES + 3] = ai_mesh->mTextureCoords[0][v].x;
+					ourMesh->vertex[v * VERTEX_FEATURES + 4] = ai_mesh->mTextureCoords[0][v].y;
 				}
 			}
 		
 			// Copy faces
-			if (scene->mMeshes[i]->HasFaces())
+			if (ai_mesh->HasFaces())
 			{
-				ourMesh->num_index = scene->mMeshes[i]->mNumFaces * 3;
+				ourMesh->num_index = ai_mesh->mNumFaces * 3;
 				ourMesh->index = new uint[ourMesh->num_index]; // assume each face is a triangle
-				for (uint j = 0; j < scene->mMeshes[i]->mNumFaces; ++j)
+				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
 				{
-					if (scene->mMeshes[i]->mFaces[j].mNumIndices != 3) 
+					if (ai_mesh->mFaces[j].mNumIndices != 3)
 					{
 						LOG("WARNING, geometry face with != 3 indices!");
 					}
 					else
 					{
-						memcpy(&ourMesh->index[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, 3 * sizeof(uint));
+						memcpy(&ourMesh->index[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
 						LOG("New mesh with %d index", ourMesh->num_index);
 
 					}
