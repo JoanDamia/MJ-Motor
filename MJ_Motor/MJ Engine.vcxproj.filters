@@ -43,6 +43,9 @@
     <Filter Include="Sources\FBX">
       <UniqueIdentifier>{4856b342-fc22-49ad-a3e5-a78fdec5be14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\GameObjectsComponents">
+      <UniqueIdentifier>{e606d644-3962-48fc-b8b1-39eb032c509d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Modules\Color.h">
@@ -297,6 +300,12 @@
     <ClInclude Include="Modules\TexLoader.h">
       <Filter>Sources\FBX</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\GameObjects.h">
+      <Filter>Sources\GameObjectsComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Components.h">
+      <Filter>Sources\GameObjectsComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Color.cpp">
@@ -460,6 +469,12 @@
     </ClCompile>
     <ClCompile Include="Modules\TexLoader.cpp">
       <Filter>Sources\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\GameObjects.cpp">
+      <Filter>Sources\GameObjectsComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Components.cpp">
+      <Filter>Sources\GameObjectsComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
