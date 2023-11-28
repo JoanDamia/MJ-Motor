@@ -9,20 +9,29 @@
 
 #include "TexLoader.h"
 
+std::map<std::string, uint> TexLoader::texture_names;
+
 GLuint TexLoader::LoadTexture(char const* thefilename)
 {
-		ILuint tex_id;
-		ilGenImages(1, &tex_id);
-		ilBindImage(tex_id);
+	if (texture_names.find(thefilename) != texture_names.end())
+	{
+		return texture_names[thefilename];
+	}
 
-		//Load an image
-		ilLoadImage(thefilename);
+	ILuint tex_id;
+	ilGenImages(1, &tex_id);
+	ilBindImage(tex_id);
 
-		tex_id = ilutGLBindTexImage();
+	//Load an image
+	ilLoadImage(thefilename);
 
-		// Clean Image
-		ilBindImage(0);
-		ilDeleteImages(1, &tex_id);
+	tex_id = ilutGLBindTexImage();
 
-		return tex_id;
+	// Clean Image
+	ilBindImage(0);
+	ilDeleteImages(1, &tex_id);
+
+	texture_names[thefilename] = tex_id;
+
+	return tex_id;
 }

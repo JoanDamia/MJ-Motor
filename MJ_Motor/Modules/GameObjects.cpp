@@ -12,10 +12,6 @@
 
 GameObjects::GameObjects(GameObjects* parent, std::string name)
 {
-	App->scene_intro->gameObjects[App->fbxRender->id_count] = this;
-	App->meshRender->id_count++;
-
-	id = App->fbxRender->id_count;
 	this->name = name;
 }
 
