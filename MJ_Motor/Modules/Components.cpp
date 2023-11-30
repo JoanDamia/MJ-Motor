@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-Components::Components(GameObjects* game_object, TYPE type) : go(game_object), type(type)
+Components::Components(GameObjects* gameObject, TYPE type) : go(gameObject), type(type)
 {
 }
 

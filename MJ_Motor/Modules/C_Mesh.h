@@ -21,7 +21,7 @@ public:
 	C_Mesh(GameObjects* gameObjects);
 	~C_Mesh();
 
-	void SetMesh(MeshStorer* mesh, std::string mesh_name);
+	void SetMesh(MeshStorer* mesh, std::string meshName);
 	void OnGui();
 
 	MeshStorer* GetMesh()

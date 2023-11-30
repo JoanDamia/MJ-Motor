@@ -23,7 +23,7 @@ public:
 	bool activate;
 	GameObjects* parent = nullptr;
 
-	static std::map<uint, GameObjects*> gameObject_list;
+	static std::map<uint, GameObjects*> gameObjectList;
 
 	//Methods
 	GameObjects(GameObjects* parent, std::string name);

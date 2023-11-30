@@ -20,10 +20,10 @@ C_Mesh::~C_Mesh()
 
 }
 
-void C_Mesh::SetMesh(MeshStorer* mesh, std::string mesh_name)
+void C_Mesh::SetMesh(MeshStorer* mesh, std::string meshName)
 {
 	this->mesh = mesh;
-	name = mesh_name;
+	name = meshName;
 }
 
 void C_Mesh::OnGui()
