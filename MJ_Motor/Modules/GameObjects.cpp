@@ -5,18 +5,17 @@
 #include "Components.h"
 #include "FBXLoader.h"
 #include "C_Mesh.h"
-#include "C_Textures"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
 
-std::map<uint, GameObjects*> GameObjects::gameObjectList;
+std::map<uint, GameObjects*> GameObjects::gameObject_list;
 
 GameObjects::GameObjects(GameObjects* parent, std::string name)
 {
-	gameObjectList[id_count] = this;
+	gameObject_list[id_count] = this;
 
 	this->parent = parent;
 	this->name = name;
@@ -47,9 +46,6 @@ Components* GameObjects::CreateComponent(Components::TYPE type)
 	{
 	case Components::TYPE::MESH:
 		new_component = new C_Mesh(this);
-		break;
-	case Components::TYPE::TEXTURE:
-		new_component = new C_Textures(this);
 		break;
 	default:
 		LOG("component type error");

@@ -21,10 +21,9 @@ public:
 	{
 		NONE,
 		MESH,
-		TEXTURE,
 	};
 
-	Components(GameObjects* gameObject, TYPE type);
+	Components(GameObjects* game_object, TYPE type);
 
 	virtual ~Components();
 	virtual void OnGui();
