@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Components.h"
 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,15 +10,20 @@
 
 using namespace std;
 
+
 class GameObjects
 {
 public:
 
 	//Parameters
 	uint id = 0;
+	uint id_count = 0;
+
 	string name;
 	bool activate;
 	GameObjects* parent = nullptr;
+
+	static std::map<uint, GameObjects*> gameObject_list;
 
 	//Methods
 	GameObjects(GameObjects* parent, std::string name);

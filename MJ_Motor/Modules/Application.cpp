@@ -33,6 +33,8 @@ Application::~Application()
 
 bool Application::Init()
 {
+	App = this;
+
 	bool ret = true;
 
 	// Call Init() in all modules
@@ -103,3 +105,5 @@ void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
 }
+
+Application* App = nullptr;

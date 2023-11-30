@@ -94,6 +94,7 @@
     <ClInclude Include="Modules\Application.h" />
     <ClInclude Include="Modules\Color.h" />
     <ClInclude Include="Modules\Components.h" />
+    <ClInclude Include="Modules\C_Mesh.h" />
     <ClInclude Include="Modules\FBXLoader.h" />
     <ClInclude Include="Modules\glmath.h" />
     <ClInclude Include="Modules\Globals.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Modules\Application.cpp" />
     <ClCompile Include="Modules\Color.cpp" />
     <ClCompile Include="Modules\Components.cpp" />
+    <ClCompile Include="Modules\C_Mesh.cpp" />
     <ClCompile Include="Modules\FBXLoader.cpp" />
     <ClCompile Include="Modules\glmath.cpp" />
     <ClCompile Include="Modules\Libraries\ImGui\imgui.cpp" />

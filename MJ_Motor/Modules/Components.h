@@ -7,10 +7,10 @@
 #include "ImGui/imgui_impl_sdl2.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-
 #include <iostream>
 #include <string>
 #include <vector>
+
 
 class GameObjects;
 
@@ -20,11 +20,12 @@ public:
 	enum class TYPE
 	{
 		NONE,
+		MESH,
 	};
 
 	Components(GameObjects* game_object, TYPE type);
-	virtual ~Components();
 
+	virtual ~Components();
 	virtual void OnGui();
 
 	TYPE GetType() { return type; }
