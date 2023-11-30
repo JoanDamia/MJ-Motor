@@ -309,6 +309,9 @@
     <ClInclude Include="Modules\C_Mesh.h">
       <Filter>Sources\GameObjectsComponents</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\C_Textures.h">
+      <Filter>Sources\GameObjectsComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Color.cpp">
@@ -480,6 +483,9 @@
       <Filter>Sources\GameObjectsComponents</Filter>
     </ClCompile>
     <ClCompile Include="Modules\C_Mesh.cpp">
+      <Filter>Sources\GameObjectsComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\C_Textures.cpp">
       <Filter>Sources\GameObjectsComponents</Filter>
     </ClCompile>
   </ItemGroup>

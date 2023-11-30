@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Modules\C_Textures.h" />
     <ClInclude Include="Modules\Application.h" />
     <ClInclude Include="Modules\Color.h" />
     <ClInclude Include="Modules\Components.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Modules\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Modules\C_Textures.cpp" />
     <ClCompile Include="Modules\Application.cpp" />
     <ClCompile Include="Modules\Color.cpp" />
     <ClCompile Include="Modules\Components.cpp" />
