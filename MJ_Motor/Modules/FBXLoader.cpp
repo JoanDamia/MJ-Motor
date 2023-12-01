@@ -32,6 +32,7 @@ void FBXLoader::FileLoader(const char* file_path)
 			ourMesh->num_vertex = ai_mesh->mNumVertices;
 			ourMesh->vertex = new float[ourMesh->num_vertex * VERTEX_FEATURES];
 			LOG("New mesh with %d vertex", ourMesh->num_vertex);
+			App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d vertex", ourMesh->num_vertex);
 					
 			for (int v = 0; v < ourMesh->num_vertex; v++) {
 
@@ -56,14 +57,15 @@ void FBXLoader::FileLoader(const char* file_path)
 					if (ai_mesh->mFaces[j].mNumIndices != 3)
 					{
 						LOG("WARNING, geometry face with != 3 indices!");
+						App->editor->console_log.AddLog(__FILE__, __LINE__, "WARNING, geometry face with != 3 indices!");
 					}
 					else
 					{
 						memcpy(&ourMesh->index[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-						LOG("New mesh with %d index", ourMesh->num_index);
-
 					}
 				}
+				LOG("New mesh with %d index", ourMesh->num_index);
+				App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
 			}
 
 			//Load Texture
@@ -83,7 +85,10 @@ void FBXLoader::FileLoader(const char* file_path)
 		//ourMesh->RenderOneMesh();
 	}
 	else
+	{
 		LOG("Error loading scene % s", file_path);
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "Error loading scene % s", file_path);
+	}
 }
 
 void FBXLoader::RenderAll() 

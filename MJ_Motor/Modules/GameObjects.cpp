@@ -48,8 +48,12 @@ Components* GameObjects::CreateComponent(Components::TYPE type)
 	case Components::TYPE::MESH:
 		newComponent = new C_Mesh(this);
 		break;
+	case Components::TYPE::TEXTURE:
+		newComponent = new C_Textures(this);
+		break;
 	default:
-		LOG("component type error");
+		LOG("Component type error");
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "Component type error");
 		break;
 	}
 
