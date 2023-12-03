@@ -22,6 +22,7 @@ public:
 		NONE,
 		MESH,
 		TEXTURE,
+		TRANSFORM,
 	};
 
 	Components(GameObjects* gameObject, TYPE type);

@@ -22,6 +22,7 @@ public:
 	string name;
 	bool activate;
 	GameObjects* parent = nullptr;
+	C_Transform* transform = nullptr;
 
 	static std::map<uint, GameObjects*> gameObjectList;
 

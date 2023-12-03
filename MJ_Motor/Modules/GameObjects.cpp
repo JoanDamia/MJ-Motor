@@ -6,6 +6,7 @@
 #include "FBXLoader.h"
 #include "C_Mesh.h"
 #include "C_Textures.h"
+#include "C_Transform.h"
 
 #include <iostream>
 #include <string>
@@ -50,6 +51,9 @@ Components* GameObjects::CreateComponent(Components::TYPE type)
 		break;
 	case Components::TYPE::TEXTURE:
 		newComponent = new C_Textures(this);
+		break;
+	case Components::TYPE::TRANSFORM:
+		newComponent = new C_Transform(this);
 		break;
 	default:
 		LOG("Component type error");
