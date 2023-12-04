@@ -23,6 +23,7 @@ public:
 
 	void SetMesh(MeshStorer* mesh, std::string meshName);
 	void OnGui();
+	void Update();
 
 	MeshStorer* GetMesh()
 	{

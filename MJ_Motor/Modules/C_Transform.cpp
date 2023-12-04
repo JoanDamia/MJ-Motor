@@ -34,6 +34,7 @@ C_Transform::~C_Transform()
 
 void C_Transform::SetTransform(float3 position, Quat rotation, float3 scale)
 {
+	/*
 	transform.position = position;
 	transform.rotation = rotation.Normalized();
 	transform.scale = scale;
@@ -48,11 +49,42 @@ void C_Transform::SetTransform(float3 position, Quat rotation, float3 scale)
 		}
 	}
 	transform.globalTransPosition = transform.globalPosition.Transposed();
+	*/
 }
 
 float* C_Transform::GetGlobalTransposed()
 {
 	return transform.globalTransPosition.ptr();
+}
+
+void C_Transform::Update()
+{
+	/*
+	C_Mesh* Cmesh = dynamic_cast<C_Mesh*>(go->GetComponents(Components::TYPE::MESH));
+	if (Cmesh != nullptr && Cmesh->mesh->localAABB_init)
+	{
+		Cmesh->mesh->GenerateGlobalBoundingBox();
+	}
+
+	transform.quatRotation = Quat::FromEulerXYZ(transform.eulRotation.x * DEGTORAD, transform.eulRotation.y * DEGTORAD, transform.eulRotation.z * DEGTORAD);
+	transform.quatRotation.Normalize();
+	transform.localPos = float4x4::FromTRS(transform.position, transform.quatRotation, transform.scale);
+
+
+
+	if (this->go->id > 1)
+	{
+		if (this->go->parent != nullptr)
+		{
+			if (this->go->parent->transform != nullptr)
+			{
+				// We apply the posicion formula
+				this->transform.globalPos = this->go->parent->transform->transform.globalPos * this->transform.localPos;
+				this->transform.transGlobalPos = this->transform.globalPos.Transposed();
+			}
+		}
+	}
+	*/
 }
 
 float4x4 C_Transform::GetGlobalMatrix()

@@ -30,6 +30,7 @@ struct MeshStorer
 	uint num_vertex = 0;
 	float* vertex = nullptr;
 	GLuint id_texture;
+	uint ID;
 
 	const char* bakerHouseTexPath = "Assets/BakerHouse/Baker_house.png";
 

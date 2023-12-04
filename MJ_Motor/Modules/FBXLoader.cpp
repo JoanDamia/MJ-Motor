@@ -6,6 +6,8 @@
 #include "FBXLoader.h"
 #include "Application.h"
 #include "TexLoader.h"
+#include "GameObjects.h"
+
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
 
@@ -22,6 +24,9 @@ void FBXLoader::FileLoader(const char* file_path)
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene -> HasMeshes())
 	{
+
+		GameObjects* FbxGameObject = new GameObjects(GameObjects::gameObjectList[0], file_path);
+
 		for (int i = 0; i < scene->mRootNode->mNumChildren; i++)
 		{
 			MeshStorer* ourMesh = new MeshStorer();
@@ -67,6 +72,8 @@ void FBXLoader::FileLoader(const char* file_path)
 				LOG("New mesh with %d index", ourMesh->num_index);
 				App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
 			}
+
+			//ourMesh->ID = GameObjects::CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
 
 			//Load Texture
 			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);

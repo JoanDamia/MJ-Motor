@@ -24,6 +24,10 @@ GameObjects::GameObjects(GameObjects* parent, std::string name)
 
 	id = id_count;
 	id_count++;
+
+	//transform = dynamic_cast<C_Transform*>(CreateComponent(Components::TYPE::TRANSFORM));
+
+	if (parent != nullptr) parent->AddChild(this);
 }
 
 GameObjects::~GameObjects()
@@ -40,6 +44,39 @@ GameObjects::~GameObjects()
 	components.clear();
 }
 
+void GameObjects::Update()
+{
+
+}
+
+
+// -----------------------------------------------------------------
+uint GameObjects::CreateGameObject(GameObjects* parent, std::string name)
+{
+	GameObjects* gameObject = new GameObjects(parent, name);
+
+	return gameObject->id;
+}
+
+bool GameObjects::AddChild(GameObjects* child)
+{
+	children.push_back(child);
+
+	return true;
+}
+
+vector <GameObjects*> GameObjects::GetChildren()
+{
+	return children;
+}
+
+GameObjects* GameObjects::GetChild(int n)
+{
+	return children[n];
+}
+
+
+// -----------------------------------------------------------------
 Components* GameObjects::CreateComponent(Components::TYPE type)
 {
 	Components* newComponent;
@@ -66,10 +103,21 @@ Components* GameObjects::CreateComponent(Components::TYPE type)
 	return newComponent;
 }
 
-void GameObjects::Update()
+vector <Components*> GameObjects::GetComponents()
 {
-
+	return components;
 }
 
+Components* GameObjects::GetSingleComponent(Components::TYPE type)
+{
+	for (auto component : components)
+	{
+		if (component->GetType() == type)
+		{
+			return component;
+		}
+	}
+	return NULL;
+}
 
 

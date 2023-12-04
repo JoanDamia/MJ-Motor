@@ -29,6 +29,7 @@ public:
 
 	virtual ~Components();
 	virtual void OnGui();
+	virtual void Update();
 
 	TYPE GetType() { return type; }
 

@@ -4,6 +4,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl2.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include "GameObjects.h"
 
 #include <vector>
 
@@ -151,4 +152,8 @@ public:
 
 	//FPS Graph functions
 	void PushLog(std::vector<float>* Log, float toPush);
+
+	//Hierarchy parametes and functions
+	void DisplayGameObjects(GameObjects* game_object);
+	GameObjects* gameobject_selected = nullptr;
 };

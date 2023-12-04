@@ -4,6 +4,7 @@
 #include <SDL/include/SDL_opengl.h>
 
 #include "ModuleRenderer3D.h"
+#include "GameObjects.h"
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -432,5 +433,46 @@ void ModuleEditor::ImGuiHierarchyWindow()
 
     ImGui::Text("Game Objects");
 
+    DisplayGameObjects(GameObjects::gameObjectList[0]);
+
     ImGui::End();
+}
+
+
+void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
+{
+    ImGuiTreeNodeFlags TreeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
+    TreeFlags |= ImGuiTreeNodeFlags_DefaultOpen;
+
+
+    if (game_object == gameobject_selected)
+    {
+        TreeFlags |= ImGuiTreeNodeFlags_Selected;
+    }
+    if (game_object->GetChildren().empty())
+    {
+        TreeFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+        ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags);
+
+        if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+        {
+            gameobject_selected = game_object;
+        }
+    }
+    else
+    {
+        if (ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags))
+        {
+            if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+            {
+                gameobject_selected = game_object;
+            }
+            for (size_t i = 0; i < game_object->GetChildren().size(); i++)
+            {
+                DisplayGameObjects(game_object->GetChild(i));
+            }
+            ImGui::TreePop();
+        }
+    }
+
 }

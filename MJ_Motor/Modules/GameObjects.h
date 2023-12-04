@@ -22,7 +22,7 @@ public:
 	string name;
 	bool activate;
 	GameObjects* parent = nullptr;
-	C_Transform* transform = nullptr;
+	//C_Transform* transform = nullptr;
 
 	static std::map<uint, GameObjects*> gameObjectList;
 
@@ -31,8 +31,17 @@ public:
 	~GameObjects();
 
 	void Update();
-	Components* CreateComponent(Components::TYPE);
 
+	//Game Objects Methods
+	uint CreateGameObject(GameObjects* parent, std::string name);
+	bool AddChild(GameObjects* child);
+	vector <GameObjects*> GetChildren();
+	GameObjects* GetChild(int n);
+
+	//Components Methods
+	Components* CreateComponent(Components::TYPE);
+	vector <Components*> GetComponents();
+	Components* GetSingleComponent(Components::TYPE);
 
 private:
 

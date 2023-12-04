@@ -35,3 +35,7 @@ void C_Mesh::OnGui()
 		ImGui::Text(name.c_str());
 	}
 }
+
+void C_Mesh::Update()
+{
+}
