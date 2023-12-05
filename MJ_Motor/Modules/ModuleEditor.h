@@ -112,6 +112,11 @@ public:
 	void ImGuiLicenseWindow();
 	void ImGuiHierarchyWindow();
 
+	//Hierarchy parametes and functions
+	GameObjects* gameobject_selected = nullptr;
+	uint CreateGameObject(GameObjects* parent, std::string name);
+	void DisplayGameObjects(GameObjects* game_object);
+
 	//ImGui Tool Bar Window Booleans
 	bool showScene = true;
 	bool showInspector = true;
@@ -152,8 +157,4 @@ public:
 
 	//FPS Graph functions
 	void PushLog(std::vector<float>* Log, float toPush);
-
-	//Hierarchy parametes and functions
-	void DisplayGameObjects(GameObjects* game_object);
-	GameObjects* gameobject_selected = nullptr;
 };

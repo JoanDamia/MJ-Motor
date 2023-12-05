@@ -76,7 +76,8 @@ public:
     //Chekers Texture
     GLubyte imageData[IMAGE_ROWS][IMAGE_COLS][3]; // Texture image data
 
-
+    //GameObject Counter
+    uint id_count = 0;
 };
 
 // unit cube //////////////////////////////////////////////////////////////////

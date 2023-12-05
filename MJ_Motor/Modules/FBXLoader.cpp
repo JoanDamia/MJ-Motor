@@ -6,7 +6,6 @@
 #include "FBXLoader.h"
 #include "Application.h"
 #include "TexLoader.h"
-#include "GameObjects.h"
 
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
@@ -73,7 +72,7 @@ void FBXLoader::FileLoader(const char* file_path)
 				App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
 			}
 
-			//ourMesh->ID = GameObjects::CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
+			ourMesh->ID = App->editor->CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
 
 			//Load Texture
 			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);

@@ -4,7 +4,7 @@
 #include <SDL/include/SDL_opengl.h>
 
 #include "ModuleRenderer3D.h"
-#include "GameObjects.h"
+
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -475,4 +475,11 @@ void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
         }
     }
 
+}
+
+uint ModuleEditor::CreateGameObject(GameObjects* parent, std::string name)
+{
+    GameObjects* gameObject = new GameObjects(parent, name);
+
+    return gameObject->id;
 }

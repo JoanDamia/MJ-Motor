@@ -17,14 +17,10 @@ public:
 
 	//Parameters
 	uint id = 0;
-	uint id_count = 0;
-
 	string name;
 	bool activate;
 	GameObjects* parent = nullptr;
 	//C_Transform* transform = nullptr;
-
-	static std::map<uint, GameObjects*> gameObjectList;
 
 	//Methods
 	GameObjects(GameObjects* parent, std::string name);
@@ -32,8 +28,10 @@ public:
 
 	void Update();
 
-	//Game Objects Methods
-	uint CreateGameObject(GameObjects* parent, std::string name);
+	//Game Objects Parameters
+	static std::map<uint, GameObjects*> gameObjectList;
+
+	//Game Object Methods
 	bool AddChild(GameObjects* child);
 	vector <GameObjects*> GetChildren();
 	GameObjects* GetChild(int n);

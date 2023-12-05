@@ -17,13 +17,13 @@ std::map<uint, GameObjects*> GameObjects::gameObjectList;
 
 GameObjects::GameObjects(GameObjects* parent, std::string name)
 {
-	gameObjectList[id_count] = this;
+	gameObjectList[App->renderer3D->id_count] = this;
 
 	this->parent = parent;
 	this->name = name;
 
-	id = id_count;
-	id_count++;
+	id = App->renderer3D->id_count;
+	App->renderer3D->id_count++;
 
 	//transform = dynamic_cast<C_Transform*>(CreateComponent(Components::TYPE::TRANSFORM));
 
@@ -51,13 +51,6 @@ void GameObjects::Update()
 
 
 // -----------------------------------------------------------------
-uint GameObjects::CreateGameObject(GameObjects* parent, std::string name)
-{
-	GameObjects* gameObject = new GameObjects(parent, name);
-
-	return gameObject->id;
-}
-
 bool GameObjects::AddChild(GameObjects* child)
 {
 	children.push_back(child);
