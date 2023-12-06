@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "GameObjects.h"
-#include "Libraries/MathGeoLib/include/MathGeoLib.h"
+#include "MathGeoLib/include/MathGeoLib.h"
 
 #include <iostream>
 #include <string>

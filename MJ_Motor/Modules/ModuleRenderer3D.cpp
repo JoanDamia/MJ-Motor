@@ -20,6 +20,8 @@
 #include <DevIL/include/ilu.h>
 #include <DevIL/include/il.h>
 
+#include "GameObjects.h"
+
 
 //===================================================
 //MathGeoLib make errors, it stays comented for now
@@ -166,6 +168,17 @@ bool ModuleRenderer3D::Init()
 
 	//==============================================================================================================================================================
 
+	float3 pos(0, 0, 0);
+	float3 scale(1, 1, 1);
+	Quat rot(0, 0, 0, 0);
+
+	Root = new GameObjects(NULL, "World");
+
+	GameObjects::gameObjectList[0] = Root;
+	dynamic_cast<C_Transform*>(Root->GetSingleComponent(Components::TYPE::TRANSFORM))->SetTransform(pos, rot, scale);
+
+	//==============================================================================================================================================================
+
 	//Frame Buffer
 	GenerateFrameBuffer();
 
@@ -183,6 +196,11 @@ bool ModuleRenderer3D::Init()
 	//FBXLoader::FileLoader(file_path, &myMesh);
 
 	return ret;
+}
+
+bool ModuleRenderer3D::Start()
+{
+	return false;
 }
 
 // PreUpdate: clear buffer
@@ -212,7 +230,12 @@ update_status ModuleRenderer3D::Update(float dt) {
 	
 	Grid.Render();
 
-	FBXLoader::RenderAll();
+	for (auto& gameObject : GameObjects::gameObjectList)
+	{
+		gameObject.second->Update();
+	}
+
+	//FBXLoader::RenderAll();
 
 	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)

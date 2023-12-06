@@ -38,4 +38,7 @@ void C_Mesh::OnGui()
 
 void C_Mesh::Update()
 {
+	{
+		mesh->RenderOneMesh(go->transform->GetGlobalTransposed(), mesh->id_texture);
+	}
 }

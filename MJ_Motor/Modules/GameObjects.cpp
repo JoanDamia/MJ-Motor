@@ -4,6 +4,7 @@
 #include "GameObjects.h"
 #include "Components.h"
 #include "FBXLoader.h"
+
 #include "C_Mesh.h"
 #include "C_Textures.h"
 #include "C_Transform.h"
@@ -25,7 +26,7 @@ GameObjects::GameObjects(GameObjects* parent, std::string name)
 	id = App->renderer3D->id_count;
 	App->renderer3D->id_count++;
 
-	//transform = dynamic_cast<C_Transform*>(CreateComponent(Components::TYPE::TRANSFORM));
+	transform = dynamic_cast<C_Transform*>(CreateComponent(Components::TYPE::TRANSFORM));
 
 	if (parent != nullptr) parent->AddChild(this);
 }
@@ -46,7 +47,10 @@ GameObjects::~GameObjects()
 
 void GameObjects::Update()
 {
-
+	for (int i = 0; i < components.size(); i++)
+	{
+		components[i]->Update();
+	}
 }
 
 

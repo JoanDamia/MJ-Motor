@@ -1,11 +1,10 @@
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
-
 #include "FBXLoader.h"
 #include "Application.h"
 #include "TexLoader.h"
+#include "GameObjects.h"
+
+#include "C_Mesh.h"
+#include "C_Textures.h"
 
 
 vector <MeshStorer*>FBXLoader::meshesVector; 
@@ -25,6 +24,8 @@ void FBXLoader::FileLoader(const char* file_path)
 	{
 
 		GameObjects* FbxGameObject = new GameObjects(GameObjects::gameObjectList[0], file_path);
+
+		GetNodeInfo(scene, scene->mRootNode, FbxGameObject);
 
 		for (int i = 0; i < scene->mRootNode->mNumChildren; i++)
 		{
@@ -72,17 +73,24 @@ void FBXLoader::FileLoader(const char* file_path)
 				App->editor->console_log.AddLog(__FILE__, __LINE__, "New mesh with %d index", ourMesh->num_index);
 			}
 
+			//Game Objects
 			ourMesh->ID = App->editor->CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
 
-			//Load Texture
-			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);
+			//Mesh Components
+			dynamic_cast<C_Mesh*>(GameObjects::gameObjectList[ourMesh->ID]->CreateComponent(Components::TYPE::MESH))->SetMesh(ourMesh, scene->mMeshes[i]->mName.C_Str());
+			GetNodeInfo(scene, scene->mRootNode->mChildren[i], GameObjects::gameObjectList[ourMesh->ID]);
+
+			//Texture Components
+			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->building01TexPath);
+			dynamic_cast<C_Textures*>(GameObjects::gameObjectList[ourMesh->ID]->CreateComponent(Components::TYPE::TEXTURE))->SetTexture(ourMesh->building01TexPath);
+
+			ourMesh->GenerateLocalBoundingBox();
 
 			//Generate Buffer
 			FBXLoader::GenerateMeshBuffer(ourMesh);
 
 			//Store Mesh
 			meshesVector.push_back(ourMesh);
-
 		}
 
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -101,12 +109,14 @@ void FBXLoader::RenderAll()
 {
 	for (int i = 0; i < meshesVector.size(); i++) 
 	{
-		meshesVector[i]->RenderOneMesh();
+		//meshesVector[i]->RenderOneMesh();
 	}
 }
 
-void MeshStorer::RenderOneMesh()
+void MeshStorer::RenderOneMesh(const GLfloat* globalTransform, uint texID)
 {
+	RenderAABB();
+
 	//Enable vertex arrays
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
@@ -121,10 +131,17 @@ void MeshStorer::RenderOneMesh()
 	glTexCoordPointer(2, GL_FLOAT, sizeof(float) * VERTEX_FEATURES, (void*)(3 * sizeof(float)));
 	glNormalPointer(GL_FLOAT, sizeof(float) * VERTEX_FEATURES, NULL);
 
+	glPushMatrix();
+	glMultMatrixf(globalTransform);
+
 	glDrawElements(GL_TRIANGLES,            // primitive type
 		num_index,                      // # of indices
 		GL_UNSIGNED_INT,         // data type
 		(void*)0);
+
+	glPopMatrix();
+
+	glClientActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
@@ -150,6 +167,90 @@ void FBXLoader::GenerateMeshBuffer(MeshStorer* ourMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+
+void MeshStorer::GenerateGlobalBoundingBox()
+{
+	globalOBB = localAABB;
+	//globalOBB.Transform(GameObjects::gameObjectList[ID]->transform->GetGlobalMatrix());
+
+	// Generate global AABB
+	globalAABB.SetNegativeInfinity();
+	globalAABB.Enclose(globalOBB);
+}
+
+void MeshStorer::GenerateLocalBoundingBox()
+{
+	float* vertex_positions = new float[num_vertex * 3];
+	for (size_t i = 0; i < num_vertex; i++)
+	{
+		vertex_positions[i * 3] = vertex[i * VERTEX_FEATURES];
+		vertex_positions[i * 3 + 1] = vertex[i * VERTEX_FEATURES + 1];
+		vertex_positions[i * 3 + 2] = vertex[i * VERTEX_FEATURES + 2];
+	}
+
+	localAABB.SetNegativeInfinity();
+	localAABB.Enclose((float3*)vertex, num_vertex);
+	localAABB_init = true;
+}
+
+void MeshStorer::RenderAABB()
+{
+	float3 vertexAABB[8];
+
+	globalAABB.GetCornerPoints(vertexAABB);
+
+
+	glBegin(GL_LINES);
+	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+	
+	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+	
+	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+	glEnd();
+}
+
+void FBXLoader::GetNodeInfo(const aiScene* rootScene, aiNode* rootNode, GameObjects* go)
+{
+	aiVector3D translation, scaling;
+	aiQuaternion quatRot;
+	rootNode->mTransformation.Decompose(scaling, quatRot, translation);
+
+	float3 pos(translation.x, translation.y, translation.z);
+	float3 scale(scaling.x, scaling.y, scaling.z);
+	Quat rot(quatRot.x, quatRot.y, quatRot.z, quatRot.w);
+
+	dynamic_cast<C_Transform*>(go->GetSingleComponent(Components::TYPE::TRANSFORM))->SetTransform(pos / 100, rot, scale / 100);
+
+	// We make it recursive for its children
+	if (rootNode->mNumChildren > 0)
+	{
+		for (int n = 0; n < rootNode->mNumChildren; n++)
+		{
+			GetNodeInfo(rootScene, rootNode->mChildren[n], go);
+		}
+	}
+}
 
 void FBXLoader::CleanUp()
 {

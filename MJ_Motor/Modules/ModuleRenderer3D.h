@@ -26,6 +26,8 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
+    bool Start();
+
 	update_status PreUpdate(float dt);
     update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -50,6 +52,8 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	CPlane Grid;
+
+    GameObjects* Root;
 	
 	//You won't need this after using Frustum
 	mat4x4 ProjectionMatrix;

@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Components.h"
+#include "C_Transform.h"
 
 #include <iostream>
 #include <string>
@@ -20,7 +21,7 @@ public:
 	string name;
 	bool activate;
 	GameObjects* parent = nullptr;
-	//C_Transform* transform = nullptr;
+	C_Transform* transform = nullptr;
 
 	//Methods
 	GameObjects(GameObjects* parent, std::string name);
