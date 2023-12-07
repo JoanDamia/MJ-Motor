@@ -103,6 +103,7 @@ public:
 	void DrawEditor();
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
+	void DisplayGameObjects(GameObjects* game_object);
 	bool CleanUp();
 
 	//ImGui Windows
@@ -114,8 +115,7 @@ public:
 
 	//Hierarchy parametes and functions
 	GameObjects* gameobject_selected = nullptr;
-	uint CreateGameObject(GameObjects* parent, std::string name);
-	void DisplayGameObjects(GameObjects* game_object);
+
 
 	//ImGui Tool Bar Window Booleans
 	bool showScene = true;
@@ -123,6 +123,8 @@ public:
 	bool showConsole = true;
 	bool showAbout = false;
 	bool showHierarchy = true;
+	bool showGameObject = true;
+	bool showComponent = true;
 
 	//Inspector booleans
 	bool showCubeDirectMode = false;

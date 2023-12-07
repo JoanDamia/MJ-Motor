@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include <SDL/include/SDL_opengl.h>
+#include "C_Mesh.h"
 
 #include "ModuleRenderer3D.h"
 
@@ -96,6 +97,77 @@ update_status ModuleEditor::PostUpdate(float dt)
 
         if (ImGui::BeginMenuBar())
         {
+            /*
+            * 
+            //Mouse Picking
+            if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && ImGui::IsWindowHovered())
+            {
+
+                ImVec2 position = ImGui::GetMousePos();
+                ImVec2 normal = App->camera->Normalize(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y + ImGui::GetFrameHeight(), ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - ImGui::GetFrameHeight(), position);
+                normal.x = (normal.x - 0.5f) / 0.5f;
+                normal.y = -((normal.y - 0.5f) / 0.5f);
+
+                LineSegment picking = App->camera->frustum.UnProjectLineSegment(normal.x, normal.y);
+                App->meshRender->Objetive = picking.a;
+                App->meshRender->Origin = picking.b;
+
+                std::map<float, GameObjects*> gObjects;
+
+                for (size_t i = 0; i < App->scene_intro->gameObjects.size(); i++)
+                {
+                    C_Mesh* Cmesh = dynamic_cast<C_Mesh*>(App->scene_intro->gameObjects[i]->GetComponent(Component::TYPE::MESH));
+
+                    if (Cmesh != nullptr && picking.Intersects(Cmesh->mesh->globalAABB))
+                    {
+                        LOG("Picked");
+                        App->editor->console_log.AddLog(__FILE__, __LINE__, "Picked");
+
+                        LineSegment secondpicking = picking;
+
+                        secondpicking.Transform(App->scene_intro->gameObjects[i]->transform->GetGlobalMatrix().Inverted());
+
+                        if (Cmesh->mesh->num_vertex >= 9) //TODO: Had to do this to avoid squared meshes crash
+                        {
+                            for (uint z = 0; z < Cmesh->mesh->num_index; z += 3)
+                            {
+                                float3 vertex1(&Cmesh->mesh->vertex[Cmesh->mesh->index[z] * VERTEX_FEATURES]);
+                                float3 vertex2(&Cmesh->mesh->vertex[Cmesh->mesh->index[z + 1] * VERTEX_FEATURES]);
+                                float3 vertex3(&Cmesh->mesh->vertex[Cmesh->mesh->index[z + 2] * VERTEX_FEATURES]);
+
+                                Triangle triangle(vertex1, vertex2, vertex3);
+
+                                float dist = 0;
+                                if (picking.Intersects(triangle, &dist, nullptr))
+                                {
+                                    LOG("Triangle Picked");
+                                    App->editor->console_log.AddLog(__FILE__, __LINE__, "Triangle Picked");
+
+                                    gObjects[dist] = App->scene_intro->gameObjects[i];
+
+                                }
+                            }
+                        }
+
+                    }
+                }
+                GameObjects* selectedGO = nullptr;
+                float nearGO = 0;
+                for (auto& go : gObjects)
+                {
+                    if (selectedGO == nullptr)
+                    {
+                        nearGO = go.first;
+                        selectedGO = go.second;
+                    }
+                    else if (go.first < nearGO) {
+                        nearGO = go.first;
+                        selectedGO = go.second;
+                    }
+                }
+                App->scene_intro->gameobject_selected = selectedGO;
+            }
+            */
             // File menu
             if (ImGui::BeginMenu("File"))
             {
@@ -120,7 +192,11 @@ update_status ModuleEditor::PostUpdate(float dt)
                 ImGui::Text("\n");
 
                 if (ImGui::MenuItem(" Inspector"))
+                {
                     showInspector = !showInspector;
+                    showComponent = true;
+                }
+                    
 
                 ImGui::Text("\n");
 
@@ -129,8 +205,12 @@ update_status ModuleEditor::PostUpdate(float dt)
 
                 ImGui::Text("\n");
 
-                if (ImGui::MenuItem(" Hierarchy"))
+                if (ImGui::MenuItem(" Hierarchy")) 
+                {
                     showHierarchy = !showHierarchy;
+                    showGameObject = true;
+                }
+                    
 
                 ImGui::Text("\n");
 
@@ -197,6 +277,47 @@ update_status ModuleEditor::PostUpdate(float dt)
         {
             ImGuiInspectorWindow();
         }
+
+        /*
+        //ImGui GameObjects Window
+        if (showGameObject)
+        {
+            ImGui::Begin("Hierarchy", &showGameObject, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu("Menu"))
+                {
+                    if (ImGui::MenuItem("Settings"))
+                    {
+
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenuBar();
+            }
+            ImGui::Text("GameObjects: \n");
+            DisplayGameObjects(App->scene_intro->gameObjects[0]);
+
+            ImGui::End();
+        }
+
+        //ImGui Components Window
+        if (showComponent)
+        {
+            ImGui::Begin("Inspector", &showComponent, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+            if (App->scene_intro->gameobject_selected != NULL)
+            {
+                for (size_t i = 0; i < App->scene_intro->gameobject_selected->GetComponents().size(); i++)
+                {
+                    App->scene_intro->gameobject_selected->GetComponentByNum(i)->OnGui();
+
+                }
+            }
+
+            ImGui::End();
+
+        }
+        */
 
         //ImGui Console Window
         if (showConsole)
@@ -427,18 +548,6 @@ void ModuleEditor::ImGuiLicenseWindow()
 }
 
 // -----------------------------------------------------------------        
-void ModuleEditor::ImGuiHierarchyWindow()
-{
-    ImGui::Begin("Hierarchy", NULL, ImGuiWindowFlags_AlwaysAutoResize);
-
-    ImGui::Text("Game Objects");
-
-    DisplayGameObjects(GameObjects::gameObjectList[0]);
-
-    ImGui::End();
-}
-
-
 void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
 {
     ImGuiTreeNodeFlags TreeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
@@ -477,9 +586,15 @@ void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
 
 }
 
-uint ModuleEditor::CreateGameObject(GameObjects* parent, std::string name)
+void ModuleEditor::ImGuiHierarchyWindow()
 {
-    GameObjects* gameObject = new GameObjects(parent, name);
+    ImGui::Begin("Hierarchy", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
-    return gameObject->id;
+    ImGui::Text("Game Objects");
+
+    DisplayGameObjects(GameObjects::gameObjectList[0]);
+
+    ImGui::End();
 }
+
+

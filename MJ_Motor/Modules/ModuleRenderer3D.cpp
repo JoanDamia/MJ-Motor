@@ -556,3 +556,12 @@ void ModuleRenderer3D::DirectModeCube() {
 
 	}
 }
+
+
+
+uint ModuleRenderer3D::CreateGameObject(GameObjects* parent, std::string name)
+{
+	GameObjects* gameObject = new GameObjects(parent, name);
+
+	return gameObject->id;
+}

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "TexLoader.h"
 #include "GameObjects.h"
+#include "C_Textures.h"
 
 #include "C_Mesh.h"
 #include "C_Textures.h"
@@ -74,7 +75,7 @@ void FBXLoader::FileLoader(const char* file_path)
 			}
 
 			//Game Objects
-			ourMesh->ID = App->editor->CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
+			ourMesh->ID = App->renderer3D->CreateGameObject(FbxGameObject, scene->mRootNode->mChildren[i]->mName.C_Str());
 
 			//Mesh Components
 			dynamic_cast<C_Mesh*>(GameObjects::gameObjectList[ourMesh->ID]->CreateComponent(Components::TYPE::MESH))->SetMesh(ourMesh, scene->mMeshes[i]->mName.C_Str());

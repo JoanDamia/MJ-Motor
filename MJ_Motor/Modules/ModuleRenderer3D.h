@@ -47,6 +47,12 @@ public:
 
     void GenerateFrameBuffer();
 
+    //Hierarchy parametes and functions
+    GameObjects* gameobject_selected = nullptr;
+    uint CreateGameObject(GameObjects* parent, std::string name);
+  
+    
+
 public:
 
 	Light lights[MAX_LIGHTS];
