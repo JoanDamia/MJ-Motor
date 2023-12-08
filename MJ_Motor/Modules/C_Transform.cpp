@@ -48,7 +48,7 @@ void C_Transform::SetTransform(float3 position, Quat rotation, float3 scale)
 		}
 	}
 
-	transform.globalTransPosition = transform.globalPosition.Transposed();	
+	transform.globalTransPosition = transform.globalPosition.Transposed();
 }
 
 float* C_Transform::GetGlobalTransposed()
@@ -71,7 +71,7 @@ void C_Transform::Update()
 	transform.localPosition = float4x4::FromTRS(transform.position, transform.qRotation, transform.scale);
 
 
-	if (this->go->id > 1)
+	if (this->go->id > 0)
 	{
 		if (this->go->parent != nullptr)
 		{
@@ -106,5 +106,32 @@ void C_Transform::OnGui()
 		ImGui::Text("Scale:");
 		ImGui::SameLine();
 		ImGui::DragFloat3("##Sca", &transform.scale[0], 0.1f);
+
+		ImGui::Text("\n");
+
+		if (ImGui::Button("Reset Position"))
+		{
+			this->transform.position[0] = (0.0f);
+			this->transform.position[1] = (0.0f);
+			this->transform.position[2] = (0.0f);
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Reset Rotation"))
+		{
+			this->transform.eulRotation[0] = (0.0f);
+			this->transform.eulRotation[1] = (0.0f);
+			this->transform.eulRotation[2] = (0.0f);
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Reset Scale"))
+		{
+			this->transform.scale[0] = (1.0f);
+			this->transform.scale[1] = (1.0f);
+			this->transform.scale[2] = (1.0f);
+		}
+
+		ImGui::Text("\n");
 	}
 }

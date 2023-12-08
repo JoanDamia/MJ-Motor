@@ -434,7 +434,7 @@ void ModuleRenderer3D::GenerateFrameBuffer()
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
 	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, 1280, 700, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		GL_TEXTURE_2D, 0, GL_RGB, 1480, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -448,7 +448,7 @@ void ModuleRenderer3D::GenerateFrameBuffer()
 	//Render Buffer Creation
 	glGenRenderbuffers(1, &rboDepthStencil);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 700);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1480, 900);
 	glBindRenderbuffer(GL_FRAMEBUFFER, 0);
 
 	glFramebufferRenderbuffer(

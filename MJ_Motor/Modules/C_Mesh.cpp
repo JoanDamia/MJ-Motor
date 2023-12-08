@@ -28,11 +28,12 @@ void C_Mesh::SetMesh(MeshStorer* mesh, std::string meshName)
 
 void C_Mesh::OnGui()
 {
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Text("Mesh Name:");
 		ImGui::SameLine();
 		ImGui::Text(name.c_str());
+		ImGui::Text("\n");
 	}
 }
 

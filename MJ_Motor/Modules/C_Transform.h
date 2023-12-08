@@ -29,6 +29,10 @@ public:
 	//Parameters
 	Transform transform;
 
+	bool resetPos = false;
+	bool resetRot = false;
+	bool resetScale = false;
+
 	//Methods
 	C_Transform(GameObjects* gameObject);
 	~C_Transform();

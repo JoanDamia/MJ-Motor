@@ -103,7 +103,6 @@ public:
 	void DrawEditor();
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
-	void DisplayGameObjects(GameObjects* game_object);
 	bool CleanUp();
 
 	//ImGui Windows
@@ -112,9 +111,11 @@ public:
 	void ImGuiCreditsWindow();
 	void ImGuiLicenseWindow();
 	void ImGuiHierarchyWindow();
+	void ImGuiConfigurationWindow();
 
 	//Hierarchy parametes and functions
 	GameObjects* gameobject_selected = nullptr;
+	void DisplayGameObjects(GameObjects* game_object);
 
 
 	//ImGui Tool Bar Window Booleans
@@ -125,6 +126,7 @@ public:
 	bool showHierarchy = true;
 	bool showGameObject = true;
 	bool showComponent = true;
+	bool showConfiguration = false;
 
 	//Inspector booleans
 	bool showCubeDirectMode = false;

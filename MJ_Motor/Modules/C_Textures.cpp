@@ -26,11 +26,11 @@ void C_Textures::SetTexture(const char* textureName)
 
 void C_Textures::OnGui()
 {
-	if (ImGui::CollapsingHeader("Texture"))
+	if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Text("Texture path:");
 		ImGui::SameLine();
 		ImGui::Text(name);
-
+		ImGui::Text("\n");
 	}
 }

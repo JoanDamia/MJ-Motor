@@ -48,7 +48,6 @@ public:
     void GenerateFrameBuffer();
 
     //Hierarchy parametes and functions
-    GameObjects* gameobject_selected = nullptr;
     uint CreateGameObject(GameObjects* parent, std::string name);
   
     
@@ -82,6 +81,7 @@ public:
     uint rboDepthStencil;
 
     const char* file_path = "Assets/BakerHouse/BakerHouse.fbx";
+    const char* street_file_path = "Assets/street/Street_environment_V01.fbx";
 
     //Chekers Texture
     GLubyte imageData[IMAGE_ROWS][IMAGE_COLS][3]; // Texture image data

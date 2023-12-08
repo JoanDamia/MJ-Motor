@@ -117,4 +117,9 @@ Components* GameObjects::GetSingleComponent(Components::TYPE type)
 	return NULL;
 }
 
+Components* GameObjects::GetComponentByNum(int i)
+{
+	return components[i];
+}
+
 

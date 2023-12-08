@@ -41,6 +41,7 @@ public:
 	Components* CreateComponent(Components::TYPE);
 	vector <Components*> GetComponents();
 	Components* GetSingleComponent(Components::TYPE);
+	Components* GetComponentByNum(int i);
 
 private:
 

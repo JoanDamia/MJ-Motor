@@ -82,8 +82,8 @@ void FBXLoader::FileLoader(const char* file_path)
 			GetNodeInfo(scene, scene->mRootNode->mChildren[i], GameObjects::gameObjectList[ourMesh->ID]);
 
 			//Texture Components
-			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->building01TexPath);
-			dynamic_cast<C_Textures*>(GameObjects::gameObjectList[ourMesh->ID]->CreateComponent(Components::TYPE::TEXTURE))->SetTexture(ourMesh->building01TexPath);
+			ourMesh->id_texture = TexLoader::LoadTexture(ourMesh->bakerHouseTexPath);
+			dynamic_cast<C_Textures*>(GameObjects::gameObjectList[ourMesh->ID]->CreateComponent(Components::TYPE::TEXTURE))->SetTexture(ourMesh->bakerHouseTexPath);
 
 			ourMesh->GenerateLocalBoundingBox();
 
@@ -122,7 +122,7 @@ void MeshStorer::RenderOneMesh(const GLfloat* globalTransform, uint texID)
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 
-	glBindTexture(GL_TEXTURE_2D, id_texture);
+	glBindTexture(GL_TEXTURE_2D, texID);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);

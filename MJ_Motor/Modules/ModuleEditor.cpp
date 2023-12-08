@@ -196,8 +196,15 @@ update_status ModuleEditor::PostUpdate(float dt)
                     showInspector = !showInspector;
                     showComponent = true;
                 }
-                    
 
+                ImGui::Text("\n");
+
+                if (ImGui::MenuItem(" Configuration"))
+                {
+                    showConfiguration = !showConfiguration;
+                    showComponent = true;
+                }
+                    
                 ImGui::Text("\n");
 
                 if (ImGui::MenuItem(" Console"))
@@ -211,7 +218,6 @@ update_status ModuleEditor::PostUpdate(float dt)
                     showGameObject = true;
                 }
                     
-
                 ImGui::Text("\n");
 
                 ImGui::EndMenu();
@@ -276,6 +282,12 @@ update_status ModuleEditor::PostUpdate(float dt)
         if (showInspector)
         {
             ImGuiInspectorWindow();
+        }
+
+        //ImGui Configuration Window
+        if (showConfiguration)
+        {
+            ImGuiConfigurationWindow();
         }
 
         /*
@@ -379,6 +391,44 @@ void ModuleEditor::PushLog(std::vector<float>* Log, float toPush)
         Log->push_back(toPush);
     }
 }
+
+// -----------------------------------------------------------------
+void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
+{
+    ImGuiTreeNodeFlags TreeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
+    TreeFlags |= ImGuiTreeNodeFlags_DefaultOpen;
+
+    if (game_object == gameobject_selected)
+    {
+        TreeFlags |= ImGuiTreeNodeFlags_Selected;
+    }
+    if (game_object->GetChildren().empty())
+    {
+        TreeFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+        ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags);
+
+        if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+        {
+            gameobject_selected = game_object;
+        }
+    }
+    else
+    {
+        if (ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags))
+        {
+            if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+            {
+                gameobject_selected = game_object;
+            }
+            for (size_t i = 0; i < game_object->GetChildren().size(); i++)
+            {
+                DisplayGameObjects(game_object->GetChild(i));
+            }
+            ImGui::TreePop();
+        }
+    }
+
+}
     
 
 //ImGui Windows
@@ -396,11 +446,25 @@ void ModuleEditor::ImGuiRenderWindow()
 // -----------------------------------------------------------------        
 void ModuleEditor::ImGuiInspectorWindow()
 {
-    ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::Begin("Inspector", &showInspector, ImGuiWindowFlags_AlwaysAutoResize);
+   
+    if (gameobject_selected != NULL)
+    {
+        for (size_t i = 0; i < App->editor->gameobject_selected->GetComponents().size(); i++)
+        {
+            gameobject_selected->GetComponentByNum(i)->OnGui();
+        }
+    }
+   
+    ImGui::End();
+}
 
-    //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+// -----------------------------------------------------------------        
+void ModuleEditor::ImGuiConfigurationWindow()
+{
 
-    //ImGui::Checkbox("CubeDirectMode", &showCubeDirectMode);
+    ImGui::Begin("Configuration", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+
 
     ImGui::Text("Basic Shapes");
 
@@ -548,44 +612,6 @@ void ModuleEditor::ImGuiLicenseWindow()
 }
 
 // -----------------------------------------------------------------        
-void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
-{
-    ImGuiTreeNodeFlags TreeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
-    TreeFlags |= ImGuiTreeNodeFlags_DefaultOpen;
-
-
-    if (game_object == gameobject_selected)
-    {
-        TreeFlags |= ImGuiTreeNodeFlags_Selected;
-    }
-    if (game_object->GetChildren().empty())
-    {
-        TreeFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-        ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags);
-
-        if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-        {
-            gameobject_selected = game_object;
-        }
-    }
-    else
-    {
-        if (ImGui::TreeNodeEx(game_object->name.c_str(), TreeFlags))
-        {
-            if (ImGui::IsItemHovered() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-            {
-                gameobject_selected = game_object;
-            }
-            for (size_t i = 0; i < game_object->GetChildren().size(); i++)
-            {
-                DisplayGameObjects(game_object->GetChild(i));
-            }
-            ImGui::TreePop();
-        }
-    }
-
-}
-
 void ModuleEditor::ImGuiHierarchyWindow()
 {
     ImGui::Begin("Hierarchy", NULL, ImGuiWindowFlags_AlwaysAutoResize);
