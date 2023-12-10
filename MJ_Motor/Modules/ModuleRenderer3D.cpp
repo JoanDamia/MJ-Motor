@@ -237,7 +237,16 @@ update_status ModuleRenderer3D::Update(float dt) {
 		gameObject.second->Update();
 	}
 
-	//FBXLoader::RenderAll();
+	if (App->editor->showMouseRay)
+	{
+		glBegin(GL_LINES);
+
+		glVertex3f(Objective.x, Objective.y, Objective.z);
+		glVertex3f(Origin.x, Origin.y, Origin.z);
+
+		glEnd();
+	}
+
 
 	//Show Checkers Cube with CheckBox
 	if (App->editor->showCubeCheckers)

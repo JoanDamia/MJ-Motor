@@ -90,6 +90,10 @@ public:
 
     //GameObject Counter
     uint id_count = 0;
+
+    //Mouse Picking
+    float3 Objective;
+    float3 Origin;
 };
 
 // unit cube //////////////////////////////////////////////////////////////////

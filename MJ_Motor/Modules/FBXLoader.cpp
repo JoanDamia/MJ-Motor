@@ -247,35 +247,38 @@ void MeshStorer::RenderAABB()
 
 	globalAABB.GetCornerPoints(vertexAABB);
 
+	if (App->editor->showAABB)
+	{
+		glBegin(GL_LINES);
+		glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+		glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+		glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+		glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+		glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+		glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+		glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+		glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+		
+		glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+		glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+		glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+		glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+		glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+		glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+		glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+		glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+		
+		glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
+		glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
+		glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
+		glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
+		glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
+		glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
+		glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
+		glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
+		glEnd();
 
-	glBegin(GL_LINES);
-	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
-	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
-	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
-	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
-	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
-	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
-	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
-	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
-	
-	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
-	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
-	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
-	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
-	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
-	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
-	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
-	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
-	
-	glVertex3f(vertexAABB[0].x, vertexAABB[0].y, vertexAABB[0].z);
-	glVertex3f(vertexAABB[2].x, vertexAABB[2].y, vertexAABB[2].z);
-	glVertex3f(vertexAABB[1].x, vertexAABB[1].y, vertexAABB[1].z);
-	glVertex3f(vertexAABB[3].x, vertexAABB[3].y, vertexAABB[3].z);
-	glVertex3f(vertexAABB[4].x, vertexAABB[4].y, vertexAABB[4].z);
-	glVertex3f(vertexAABB[6].x, vertexAABB[6].y, vertexAABB[6].z);
-	glVertex3f(vertexAABB[5].x, vertexAABB[5].y, vertexAABB[5].z);
-	glVertex3f(vertexAABB[7].x, vertexAABB[7].y, vertexAABB[7].z);
-	glEnd();
+	}
 }
 
 void FBXLoader::GetNodeInfo(const aiScene* rootScene, aiNode* rootNode, GameObjects* go)
@@ -290,7 +293,6 @@ void FBXLoader::GetNodeInfo(const aiScene* rootScene, aiNode* rootNode, GameObje
 
 	dynamic_cast<C_Transform*>(go->GetSingleComponent(Components::TYPE::TRANSFORM))->SetTransform(pos / 100, rot, scale / 100);
 
-	// We make it recursive for its children
 	if (rootNode->mNumChildren > 0)
 	{
 		for (int n = 0; n < rootNode->mNumChildren; n++)

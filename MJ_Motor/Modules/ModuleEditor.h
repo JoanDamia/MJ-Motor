@@ -161,4 +161,8 @@ public:
 
 	//FPS Graph functions
 	void PushLog(std::vector<float>* Log, float toPush);
+
+	//Mouse Picking booleans
+	bool showAABB = true;
+	bool showMouseRay = false;
 };

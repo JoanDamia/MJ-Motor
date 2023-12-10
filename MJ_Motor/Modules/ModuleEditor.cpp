@@ -245,7 +245,7 @@ update_status ModuleEditor::PostUpdate(float dt)
     }
 
     // 3. Show another simple window.
-    
+ 
     // Rendering
     ImGui::Render();
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -324,10 +324,84 @@ void ModuleEditor::DisplayGameObjects(GameObjects* game_object)
 void ModuleEditor::ImGuiRenderWindow() 
 {
     ImGui::Begin("Scene", NULL, ImGuiWindowFlags_NoBringToFrontOnFocus);
-    //ImVec2 wsize = ImGui::GetWindowSize();
+
+    ImVec2 wsize = ImGui::GetWindowSize();
+
     float width = ImGui::GetContentRegionAvail().x;
     float height = width * (9.0f / 16.0f);
+
     ImGui::Image((ImTextureID)App->renderer3D->texColorBuffer, ImVec2(width, height), ImVec2(0, 1), ImVec2(1, 0));
+
+    //Mouse Picking
+    if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && ImGui::IsWindowHovered())
+    {
+        ImVec2 position = ImGui::GetMousePos();
+        ImVec2 normal = App->camera->Normalize(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y + ImGui::GetFrameHeight(), ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - ImGui::GetFrameHeight(), position);
+
+        normal.x = (normal.x - 0.5f) / 0.5f;
+        normal.y = -((normal.y - 0.5f) / 0.5f);
+
+        LineSegment picking = App->camera->frustum.UnProjectLineSegment(normal.x, normal.y);
+
+        App->renderer3D->Objective = picking.a;
+        App->renderer3D->Origin = picking.b;
+
+        std::map<float, GameObjects*> gameObjects;
+
+        for (size_t i = 0; i < App->renderer3D->gameObjectList.size(); i++)
+        {
+            C_Mesh* Cmesh = dynamic_cast<C_Mesh*>(App->renderer3D->gameObjectList[i]->GetSingleComponent(Components::TYPE::MESH));
+
+            if (Cmesh != nullptr && picking.Intersects(Cmesh->mesh->globalAABB))
+            {
+                LOG("Picked");
+                App->editor->console_log.AddLog(__FILE__, __LINE__, "Picked");
+
+                LineSegment secondpicking = picking;
+
+                secondpicking.Transform(App->renderer3D->gameObjectList[i]->transform->GetGlobalMatrix().Inverted());
+                if (Cmesh->mesh->num_vertex >= 9)
+                {
+                    for (uint z = 0; z < Cmesh->mesh->num_index; z += 3)
+                    {
+                        float3 vertex1(&Cmesh->mesh->vertex[Cmesh->mesh->index[z] * VERTEX_FEATURES]);
+                        float3 vertex2(&Cmesh->mesh->vertex[Cmesh->mesh->index[z + 1] * VERTEX_FEATURES]);
+                        float3 vertex3(&Cmesh->mesh->vertex[Cmesh->mesh->index[z + 2] * VERTEX_FEATURES]);
+
+                        Triangle triangle(vertex1, vertex2, vertex3);
+
+                        float dist = 0;
+                        if (picking.Intersects(triangle, &dist, nullptr))
+                        {
+                            LOG("Triangle Picked");
+                            App->editor->console_log.AddLog(__FILE__, __LINE__, "Triangle Picked");
+
+                            gameObjects[dist] = App->renderer3D->gameObjectList[i];
+                        }
+                    }
+                }
+            }
+        }
+
+        GameObjects* selected_gameObject = nullptr;
+        float nearGO = 0;
+
+        for (auto& go : gameObjects)
+        {
+            if (selected_gameObject == nullptr)
+            {
+                nearGO = go.first;
+                selected_gameObject = go.second;
+            }
+            else if (go.first < nearGO) {
+                nearGO = go.first;
+                selected_gameObject = go.second;
+            }
+        }
+
+        App->editor->gameobject_selected = selected_gameObject;
+    }
+
     ImGui::End();
 }
 
@@ -353,6 +427,13 @@ void ModuleEditor::ImGuiConfigurationWindow()
 
     ImGui::Begin("Configuration", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
+    ImGui::Text("Mouse Picking");
+
+    ImGui::Checkbox("Show AABB", &showAABB);
+    ImGui::SameLine();
+    ImGui::Checkbox("Show Mouse Ray", &showMouseRay);
+
+    ImGui::Text("\n");
 
     ImGui::Text("Basic Shapes");
 

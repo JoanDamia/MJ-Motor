@@ -1,9 +1,11 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "MathGeoLib/include/Math/float3.h"
-#include "MathGeoLib/include/Math/float4x4.h"
+#include "glmath.h"
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl2.h"
+#include "ImGui/imgui_impl_opengl3.h"
 
 class ModuleCamera3D : public Module
 {
@@ -21,6 +23,8 @@ public:
 	float* GetViewMatrix();
 
 	bool firstPersonView = false;
+
+	ImVec2 Normalize(float x, float y, float w, float h, ImVec2 point);
 
 private:
 

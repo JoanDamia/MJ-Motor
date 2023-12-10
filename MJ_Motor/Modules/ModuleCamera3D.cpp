@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-#include "MathGeoLib/include/Math/Quat.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -189,4 +188,14 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	//todo: USE MATHGEOLIB here BEFORE 1st delivery! (TIP: Use MathGeoLib/Geometry/Frustum.h, view and projection matrices are managed internally.)
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -(X.Dot(Position)), -(Y.Dot(Position)), -(Z.Dot(Position)), 1.0f);
+}
+
+ImVec2 ModuleCamera3D::Normalize(float x, float y, float w, float h, ImVec2 point)
+{
+	ImVec2 normalizedPoint;
+
+	normalizedPoint.x = (point.x - x) / ((x + w) - x);
+	normalizedPoint.y = (point.y - y) / ((y + h) - y);
+
+	return normalizedPoint;
 }
