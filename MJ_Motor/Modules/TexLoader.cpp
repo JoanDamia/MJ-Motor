@@ -1,3 +1,4 @@
+#include "Application.h"
 
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
@@ -18,20 +19,30 @@ GLuint TexLoader::LoadTexture(char const* thefilename)
 		return texture_names[thefilename];
 	}
 
-	ILuint tex_id;
-	ilGenImages(1, &tex_id);
-	ilBindImage(tex_id);
+	if (ilLoadImage(thefilename))
+	{
+		ILuint tex_id;
+		ilGenImages(1, &tex_id);
+		ilBindImage(tex_id);
 
-	//Load an image
-	ilLoadImage(thefilename);
+		//Load an image
+		ilLoadImage(thefilename);
 
-	tex_id = ilutGLBindTexImage();
+		tex_id = ilutGLBindTexImage();
 
-	// Clean Image
-	ilBindImage(0);
-	ilDeleteImages(1, &tex_id);
+		// Clean Image
+		ilBindImage(0);
+		ilDeleteImages(1, &tex_id);
 
-	texture_names[thefilename] = tex_id;
+		texture_names[thefilename] = tex_id;
 
-	return tex_id;
+		return tex_id;
+	}
+	else
+	{
+		LOG("ERROR: Could not load Image");
+		App->editor->console_log.AddLog(__FILE__, __LINE__, "ERROR: Could not load Image");
+
+		return 0;
+	}
 }

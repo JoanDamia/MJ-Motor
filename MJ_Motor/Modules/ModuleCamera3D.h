@@ -18,7 +18,6 @@ public:
 	void Look(const float3 &Position, const float3&Reference, bool RotateAroundReference = false);
 	void LookAt(const float3&Spot);
 	void Move(const float3&Movement);
-	//ImVec2 Normalize(float x, float y, float w, float h, ImVec2 point);
 	float* GetViewMatrix();
 
 	bool firstPersonView = false;

@@ -49,7 +49,7 @@ struct MeshStorer
 	bool localAABB_init = false;
 
 	const char* bakerHouseTexPath = "Assets/BakerHouse/Baker_house.png";
-	const char* building01TexPath = "building 01_c.tga";
+	const char* building_textures[9];
 
 	//Methods
 	void RenderOneMesh(const GLfloat* globalTransform, uint texID);
@@ -74,4 +74,5 @@ public:
 	static void GenerateMeshBuffer(MeshStorer* ourMesh);
 
 	static void GetNodeInfo(const aiScene* rootScene, aiNode* rootNode, GameObjects* go);
+	static void SetUpMesh(MeshStorer* mesh);
 };

@@ -34,6 +34,8 @@
 //#endif // _DEBUG
 
 
+std::map<uint, GameObjects*> ModuleRenderer3D::gameObjectList;
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -174,7 +176,7 @@ bool ModuleRenderer3D::Init()
 
 	Root = new GameObjects(NULL, "World");
 
-	GameObjects::gameObjectList[0] = Root;
+	gameObjectList[0] = Root;
 	dynamic_cast<C_Transform*>(Root->GetSingleComponent(Components::TYPE::TRANSFORM))->SetTransform(pos, rot, scale);
 
 	//==============================================================================================================================================================
@@ -183,7 +185,7 @@ bool ModuleRenderer3D::Init()
 	GenerateFrameBuffer();
 
 	//Render Mesh with File path
-	FBXLoader::FileLoader(file_path);
+	FBXLoader::FileLoader(street_file_path);
 
 	//Render Mesh with File drop
 	if (App->input->fileDrop == true)
@@ -230,7 +232,7 @@ update_status ModuleRenderer3D::Update(float dt) {
 	
 	Grid.Render();
 
-	for (auto& gameObject : GameObjects::gameObjectList)
+	for (auto& gameObject : gameObjectList)
 	{
 		gameObject.second->Update();
 	}

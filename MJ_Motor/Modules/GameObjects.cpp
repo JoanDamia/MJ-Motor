@@ -14,11 +14,9 @@
 #include <vector>
 
 
-std::map<uint, GameObjects*> GameObjects::gameObjectList;
-
 GameObjects::GameObjects(GameObjects* parent, std::string name)
 {
-	gameObjectList[App->renderer3D->id_count] = this;
+	App->renderer3D->gameObjectList[App->renderer3D->id_count] = this;
 
 	this->parent = parent;
 	this->name = name;

@@ -11,6 +11,7 @@
 
 //todo: REMOVE this before 1st delivery!!
 #include "glmath.h"
+#include <map>
 
 
 #define IMAGE_ROWS 64      // Texture image rows and columns
@@ -50,7 +51,8 @@ public:
     //Hierarchy parametes and functions
     uint CreateGameObject(GameObjects* parent, std::string name);
   
-    
+    //Game Objects Parameters
+    static std::map<uint, GameObjects*> gameObjectList;
 
 public:
 
@@ -81,7 +83,7 @@ public:
     uint rboDepthStencil;
 
     const char* file_path = "Assets/BakerHouse/BakerHouse.fbx";
-    const char* street_file_path = "Assets/street/Street_environment_V01.fbx";
+    const char* street_file_path = "Assets/street/street.fbx";
 
     //Chekers Texture
     GLubyte imageData[IMAGE_ROWS][IMAGE_COLS][3]; // Texture image data

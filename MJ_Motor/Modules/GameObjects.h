@@ -7,7 +7,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <map>
 
 using namespace std;
 
@@ -20,7 +19,7 @@ public:
 	uint id = 0;
 	string name;
 	bool activate;
-	GameObjects* parent = nullptr;
+	GameObjects* parent;
 	C_Transform* transform = nullptr;
 
 	//Methods
@@ -28,9 +27,6 @@ public:
 	~GameObjects();
 
 	void Update();
-
-	//Game Objects Parameters
-	static std::map<uint, GameObjects*> gameObjectList;
 
 	//Game Object Methods
 	bool AddChild(GameObjects* child);
