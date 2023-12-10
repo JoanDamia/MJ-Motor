@@ -219,7 +219,7 @@ void FBXLoader::GenerateMeshBuffer(MeshStorer* ourMesh)
 void MeshStorer::GenerateGlobalBoundingBox()
 {
 	globalOBB = localAABB;
-	//globalOBB.Transform(GameObjects::gameObjectList[ID]->transform->GetGlobalMatrix());
+	globalOBB.Transform(App->renderer3D->gameObjectList[ID]->transform->GetGlobalMatrix());
 
 	// Generate global AABB
 	globalAABB.SetNegativeInfinity();

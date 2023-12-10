@@ -83,6 +83,19 @@ void C_Transform::Update()
 			}
 		}
 	}
+
+	//Center camera to origin
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		if (App->editor->gameobject_selected)
+		{
+			App->camera->LookAt(App->editor->gameobject_selected->transform->go->transform->transform.position + App->editor->gameobject_selected->parent->transform->go->transform->transform.position);
+		}
+		else
+		{
+			App->camera->LookAt(float3(0, 0, 0));
+		}
+	}
 }
 
 float4x4 C_Transform::GetGlobalMatrix()

@@ -49,12 +49,6 @@ update_status ModuleCamera3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 8.0f * dt;
 
-	//Center camera to origin
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-	{
-		LookAt(float3(0, 0, 0));
-	}
-
 	//Set camera in First Person
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
