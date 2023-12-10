@@ -24,10 +24,13 @@ Engine made by two CITM students, capable of multible features like fbx renderin
 
 ## Controls:
 
-- Camera WASD movement while pressing right click
-- Alt + Left Click for mouse based view
-- SPACE for first person view
+- W, A, S and D keys to move the camera
 - Alt + MouseWheel for zoom
+- Alt + Left Click for mouse based view
+- SPACE for activate and deactivate first person view
+- F to center the camera on the 0,0,0 axis
+- F + selected game object to center the camera on the game object
+
 
 
 
