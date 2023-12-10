@@ -126,7 +126,7 @@ public:
 	bool showHierarchy = true;
 	bool showGameObject = true;
 	bool showComponent = true;
-	bool showConfiguration = false;
+	bool showConfiguration = true;
 
 	//Inspector booleans
 	bool showCubeDirectMode = false;
